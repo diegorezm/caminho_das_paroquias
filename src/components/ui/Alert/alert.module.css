@@ -1,0 +1,26 @@
+.alert {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: var(--fs-md);
+  margin-top: 12px;
+  padding: var(--padding-sm);
+  border: 2px solid var(--dark-grey);
+  border-radius: var(--radius, 4px);
+}
+
+.alert-error {
+  background-color: var(--wine-color);
+  color: var(--beige-color);
+}
+
+.alert-info {
+  color: var(--beige-color);
+}
+
+.x_icon {
+}
+
+.x_icon:hover {
+  cursor: pointer;
+}

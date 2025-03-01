@@ -1,0 +1,13 @@
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: var(--padding-md);
+  padding-right: var(--padding-md);
+  padding-top: var(--padding-sm);
+}
+
+.auth_links {
+  display: inline-flex;
+  gap: 6px;
+}
