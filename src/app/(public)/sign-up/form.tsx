@@ -38,7 +38,7 @@ export function SignUpForm() {
   const onSubmit = async (data: SignUpData) => {
     await mutateAsync(data);
     if (!isError && !isPending) {
-      router.push("/");
+      router.push("/sign-in");
     }
   };
 
