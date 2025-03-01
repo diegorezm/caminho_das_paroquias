@@ -63,3 +63,15 @@ O projeto pode utilizar dois métodos principais para a configuração do banco 
    ```env
    DATABASE_URL=URL
    ```
+
+### Como executar o projeto
+
+1. Configure o banco de dados
+2. Instale as dependência:
+   ```bash
+   npm run install
+   ```
+3. Rode o projeto:
+   ```bash
+   npm run dev
+   ```
