@@ -42,7 +42,7 @@ O projeto pode utilizar dois métodos principais para a configuração do banco 
 
 #### Opção 1: Usando Docker
 
-1. Instale o **Docker** em sua máquina.
+1. Instale o **Docker** em sua máquina (https://docs.docker.com/engine/install/).
 2. No terminal, execute o comando:
    ```sh
    ./start-database.sh
