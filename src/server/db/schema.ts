@@ -8,6 +8,7 @@ import {
   pgTableCreator,
   text,
   timestamp,
+  char,
   uuid,
   varchar,
 } from "drizzle-orm/pg-core";
@@ -52,13 +53,65 @@ export const usersTable = createTable("users", {
   ...timestamps,
 });
 
-export const sessionsTable = createTable("sessions", {
-  id: text("id").primaryKey(),
-  userId: uuid("user_id")
-    .notNull()
-    .references(() => usersTable.id),
-  expiresAt: timestamp("expires_at", {
-    withTimezone: true,
-    mode: "date",
-  }).notNull(),
+export const sessionsTable = createTable(
+  "sessions",
+  {
+    id: text("id").primaryKey(),
+    userId: uuid("user_id")
+      .notNull()
+      .references(() => usersTable.id),
+    expiresAt: timestamp("expires_at", {
+      withTimezone: true,
+      mode: "date",
+    }).notNull(),
+  },
+  (table) => ({
+    userIdIdx: index("sessions_user_id_idx").on(table.userId),
+  }),
+);
+
+export const estadoTable = createTable("estado", {
+  sigla: char("sigla", { length: 2 }).primaryKey(),
 });
+
+export const cidadeTable = createTable(
+  "cidade",
+  {
+    id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
+    nome: varchar("nome", { length: 200 }),
+    estado: char("estado", { length: 2 })
+      .notNull()
+      .references(() => estadoTable.sigla, { onDelete: "cascade" }),
+  },
+  (table) => ({
+    estadoIdx: index("cidade_estado_idx").on(table.estado),
+  }),
+);
+
+export const enderecoTable = createTable("endereco", {
+  id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
+  cep: varchar("cep", { length: 9 }).notNull(),
+  rua: varchar("rua", { length: 200 }),
+  bairro: varchar("bairro", { length: 200 }),
+  numero: varchar("numero", { length: 6 }),
+  cidadeId: integer("cidade_id")
+    .notNull()
+    .references(() => cidadeTable.id, { onDelete: "cascade" }),
+});
+
+export const igrejaTable = createTable(
+  "igreja",
+  {
+    id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
+    nome: varchar("nome", { length: 250 }).notNull(),
+    atendente: varchar("atendente", { length: 250 }),
+    email: varchar("email", { length: 100 }).unique(),
+    numeroContato: varchar("numero_contato", { length: 15 }),
+    enderecoId: integer("endereco_id")
+      .notNull()
+      .references(() => enderecoTable.id, { onDelete: "cascade" }),
+  },
+  (table) => ({
+    enderecoIdx: index("endereco_igreja_idx").on(table.enderecoId),
+  }),
+);
