@@ -5,37 +5,38 @@
 }
 
 .card-primary {
-  background-color: var(--wine-color);
-  color: var(--beige-color);
-  border: 2px solid var(--dark-grey);
+  background-color: var(--primary);
+  color: var(--on-primary);
+  border: 2px solid var(--on-primary);
 }
 
 .card-secondary {
-  background-color: var(--orange-color);
-  color: var(--background);
-  border: 2px solid var(--dark-grey);
+  background-color: var(--secondary);
+  color: var(--on-secondary);
+  border: 2px solid var(--on-secondary);
 }
 
 .card-outline {
   background-color: transparent;
-  color: var(--dark-grey);
-  border: 2px solid var(--dark-grey);
+  color: var(--on-surface);
+  border: 2px solid var(--on-surface);
 }
 
 .card-ghost {
   background-color: transparent;
-  color: var(--dark-grey);
+  color: var(--on-surface);
   border: none;
+  box-shadow: var(--surface) 0px 7px 29px 0px;
+}
+
+.cardTitle p {
+  font-size: var(--fs-sm);
+  color: var(--on-surface);
 }
 
 .cardTitle h1 {
   font-size: var(--fs-lg);
   margin-bottom: var(--margin-xs);
-}
-
-.cardTitle p {
-  font-size: var(--fs-sm);
-  color: var(--foreground);
 }
 
 .cardBody {

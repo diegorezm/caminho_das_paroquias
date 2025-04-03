@@ -56,7 +56,7 @@ export function SignInForm() {
           />
         </FormField>
 
-        <Button variant="primary" disabled={isPending}>
+        <Button variant="outline" disabled={isPending}>
           {isPending ? "Enviando..." : "Enviar"}
         </Button>
       </Form>

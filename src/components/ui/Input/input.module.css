@@ -1,28 +1,49 @@
 .input {
   background-color: transparent;
-  border: 2px solid var(--dark-grey);
-  color: var(--foreground);
   border-radius: var(--radius);
   outline: none;
   transition: all 0.2s ease-in-out;
 }
 
-.input:focus {
-  border-color: var(--wine-color);
-  box-shadow: 0 0 4px var(--wine-color);
+.input-default {
+  border: 2px solid var(--foreground);
+  color: var(--foreground);
+}
+
+.input-default:focus {
+  border-color: var(--foreground);
+  box-shadow: 0 0 4px var(--surface);
+}
+
+.input-on-primary {
+  border-color: 2px solid var(--on-primary);
+  color: var(--on-primary);
+}
+
+.input-on-primary:focus {
+  border-color: 2px solid var(--secondary);
+}
+
+.input-on-secondary {
+  border-color: 2px solid var(--on-secondary);
+  color: var(--on-secondary);
+}
+
+.input-on-primary:focus {
+  border-color: 2px solid var(--primary);
 }
 
 .input-sm {
   padding: var(--padding-xs);
-  font-size: var(--fs-xs);
+  font-size: var(--fs-sm);
 }
 
 .input-md {
   padding: var(--padding-sm);
-  font-size: var(--fs-sm);
+  font-size: var(--fs-md);
 }
 
 .input-lg {
   padding: var(--padding-md);
-  font-size: var(--fs-md);
+  font-size: var(--fs-lg);
 }

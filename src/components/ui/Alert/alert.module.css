@@ -5,17 +5,17 @@
   font-size: var(--fs-md);
   margin-top: 12px;
   padding: var(--padding-sm);
-  border: 2px solid var(--dark-grey);
+  border: 2px solid var(--foreground);
   border-radius: var(--radius, 4px);
 }
 
 .alert-error {
-  background-color: var(--wine-color);
-  color: var(--beige-color);
+  background-color: var(--error);
+  color: var(--on-error);
 }
 
 .alert-info {
-  color: var(--beige-color);
+  color: var(--surface);
 }
 
 .x_icon {
