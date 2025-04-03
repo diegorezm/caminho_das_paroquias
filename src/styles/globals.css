@@ -1,11 +1,19 @@
 :root {
-  --background: #c6d8d3;
-  --foreground: #000000;
+  --background: #fffaec;
+  --foreground: #3d3d3d;
 
-  --beige-color: #fdf0d5;
-  --wine-color: #d81e5b;
-  --orange-color: #f0544f;
-  --dark-grey: #3a3335;
+  /* https://colorhunt.co/palette/fffaecf5ecd5578e7e3d3d3d */
+  --primary: #3d3d3d;
+  --on-primary: #fffaec;
+
+  --secondary: #578e7e;
+  --on-secondary: #3d3d3d;
+
+  --surface: #f5ecd5;
+  --on-surface: #3d3d3d;
+
+  --error: #d81e5b;
+  --on-error: #000000;
 
   --padding-xs: 4px;
   --padding-sm: 8px;

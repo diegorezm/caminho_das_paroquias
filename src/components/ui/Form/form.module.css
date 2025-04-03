@@ -12,6 +12,7 @@
 
 .label {
   color: var(--beige-color);
+  font-weight: bold;
 }
 .error {
   color: var(--beige-color);

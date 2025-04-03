@@ -6,7 +6,7 @@ import { CardBody, CardRoot, CardTitle } from "@/components/ui/Card";
 export default function SignUpPage() {
   return (
     <div className={styles.page}>
-      <CardRoot variant="secondary">
+      <CardRoot variant="outline">
         <CardTitle
           title="Crie sua conta!"
           description="Insira suas informações e crie sua conta!"
