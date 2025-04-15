@@ -24,3 +24,10 @@ export class ConflictError extends PublicError {
     this.name = "ConflictError";
   }
 }
+
+export class UnknownError extends PublicError {
+  constructor(message?: string) {
+    super(message ?? "Algo deu errado.");
+    this.name = "UnknownError";
+  }
+}

@@ -2,14 +2,15 @@ import { NextResponse, type NextRequest } from "next/server";
 import { AUTH_COOKIE_KEY } from "./server/modules/auth/constants";
 
 const privateRoutes: Record<string, boolean> = {
-  "/test": true,
+  "/dashboard": true,
 };
 
 export function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
   const hasToken = request.cookies.has(AUTH_COOKIE_KEY);
   if (privateRoutes[pathname] && !hasToken) {
-    return NextResponse.redirect(new URL("/sign-in", request.url));
+    // TODO: Send user to /sign-in
+    return NextResponse.redirect(new URL("/", request.url));
   }
   return NextResponse.next();
 }
