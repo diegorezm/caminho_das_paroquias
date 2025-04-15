@@ -1,7 +1,6 @@
 // Example model schema from the Drizzle docs
 // https://orm.drizzle.team/docs/sql-schema-declaration
 
-import { sql } from "drizzle-orm";
 import {
   index,
   integer,
@@ -68,10 +67,10 @@ export const cityTable = createTable("cidade", {
 export const addressTable = createTable("endereco", {
   id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
   cep: varchar("cep", { length: 9 }),
-  rua: varchar("rua", { length: 200 }),
+  street: varchar("rua", { length: 200 }),
   bairro: varchar("bairro", { length: 200 }),
-  numero: varchar("numero", { length: 6 }),
-  cidadeId: integer("cidade_id")
+  houseNumber: varchar("numero", { length: 6 }),
+  cityID: integer("cidade_id")
     .notNull()
     .references(() => cityTable.id, { onDelete: "cascade" }),
 });
@@ -80,15 +79,15 @@ export const churchTable = createTable(
   "igreja",
   {
     id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
-    nome: varchar("nome", { length: 250 }).notNull(),
-    atendente: varchar("atendente", { length: 250 }),
+    name: varchar("nome", { length: 250 }).notNull(),
+    attendant: varchar("atendente", { length: 250 }),
     email: varchar("email", { length: 100 }).unique(),
-    numeroContato: varchar("numero_contato", { length: 15 }),
-    enderecoId: integer("endereco_id")
+    contactNumber: varchar("numero_contato", { length: 15 }),
+    addressID: integer("endereco_id")
       .notNull()
       .references(() => addressTable.id, { onDelete: "cascade" }),
   },
   (table) => ({
-    enderecoIdx: index("endereco_igreja_idx").on(table.enderecoId),
+    enderecoIdx: index("endereco_igreja_idx").on(table.addressID),
   }),
 );
