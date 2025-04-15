@@ -2,7 +2,7 @@ import { NotFoundError } from "../../common/errors/public_error";
 import { ChurchRepository } from "../data_access/churches_repository";
 import { LocationRepository } from "../data_access/location_repository";
 
-export async function getChurchLocationUseCase(id: number) {
+export async function getChurchWithLocationUseCase(id: number) {
   const church = await ChurchRepository.findById(id);
 
   if (!church) {
