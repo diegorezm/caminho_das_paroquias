@@ -64,19 +64,19 @@ export const sessionsTable = createTable(
   }),
 );
 
-export const estadoTable = createTable("estado", {
+export const estateTable = createTable("estado", {
   sigla: char("sigla", { length: 2 }).primaryKey(),
 });
 
-export const cidadeTable = createTable("cidade", {
+export const cityTable = createTable("cidade", {
   id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
   nome: varchar("nome", { length: 200 }).notNull(),
   estado: char("estado", { length: 2 })
     .notNull()
-    .references(() => estadoTable.sigla, { onDelete: "cascade" }),
+    .references(() => estateTable.sigla, { onDelete: "cascade" }),
 });
 
-export const enderecoTable = createTable("endereco", {
+export const addressTable = createTable("endereco", {
   id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
   cep: varchar("cep", { length: 9 }),
   rua: varchar("rua", { length: 200 }),
@@ -84,10 +84,10 @@ export const enderecoTable = createTable("endereco", {
   numero: varchar("numero", { length: 6 }),
   cidadeId: integer("cidade_id")
     .notNull()
-    .references(() => cidadeTable.id, { onDelete: "cascade" }),
+    .references(() => cityTable.id, { onDelete: "cascade" }),
 });
 
-export const igrejaTable = createTable(
+export const churchTable = createTable(
   "igreja",
   {
     id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
@@ -97,7 +97,7 @@ export const igrejaTable = createTable(
     numeroContato: varchar("numero_contato", { length: 15 }),
     enderecoId: integer("endereco_id")
       .notNull()
-      .references(() => enderecoTable.id, { onDelete: "cascade" }),
+      .references(() => addressTable.id, { onDelete: "cascade" }),
   },
   (table) => ({
     enderecoIdx: index("endereco_igreja_idx").on(table.enderecoId),
