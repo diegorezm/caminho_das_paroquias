@@ -1,5 +1,5 @@
 import { db } from "@/server/db";
-import { churchTable } from "@/server/db/schema";
+import { addressTable, churchTable, cityTable } from "@/server/db/schema";
 
 import type { NewChurch, Church } from "../models/church";
 import { eq } from "drizzle-orm";
@@ -25,7 +25,7 @@ export const ChurchRepository = {
     const results = await db
       .select()
       .from(churchTable)
-      .where(eq(churchTable.nome, name));
+      .where(eq(churchTable.name, name));
     return results.length > 0 ? results : null;
   },
 
@@ -41,7 +41,7 @@ export const ChurchRepository = {
     const results = await db
       .select()
       .from(churchTable)
-      .where(eq(churchTable.numeroContato, contactNumber));
+      .where(eq(churchTable.contactNumber, contactNumber));
     return results.length > 0 ? results : null;
   },
 
@@ -49,12 +49,31 @@ export const ChurchRepository = {
     const results = await db
       .select()
       .from(churchTable)
-      .where(eq(churchTable.enderecoId, addressId));
+      .where(eq(churchTable.addressID, addressId));
     return results.length > 0 ? results : null;
   },
 
   async findAll() {
     const results = await db.select().from(churchTable);
+    return results;
+  },
+
+  async findAllWithLocation() {
+    const results = await db
+      .select()
+      .from(churchTable)
+      .innerJoin(addressTable, eq(churchTable.id, addressTable.id))
+      .innerJoin(cityTable, eq(addressTable.cityID, cityTable.id));
+    return results;
+  },
+
+  async findAllByEstate(estate: string) {
+    const results = await db
+      .select()
+      .from(churchTable)
+      .innerJoin(addressTable, eq(churchTable.id, addressTable.id))
+      .innerJoin(cityTable, eq(addressTable.cityID, cityTable.id))
+      .where(eq(cityTable.estado, estate));
     return results;
   },
 
