@@ -9,13 +9,13 @@ export async function getChurchWithLocationUseCase(id: number) {
     throw new NotFoundError("Esta igreja não existe.");
   }
 
-  const address = await LocationRepository.findAddressById(church.enderecoId);
+  const address = await LocationRepository.findAddressById(church.addressID);
 
   if (!address) {
     throw new NotFoundError("Este endereço não existe.");
   }
 
-  const city = await LocationRepository.findCityById(address.cidadeId);
+  const city = await LocationRepository.findCityById(address.cityID);
 
   if (!city) {
     throw new NotFoundError("Esta cidade não existe.");

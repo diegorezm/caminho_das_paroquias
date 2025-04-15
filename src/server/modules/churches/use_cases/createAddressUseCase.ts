@@ -3,7 +3,7 @@ import { NotFoundError } from "../../common/errors/public_error";
 import type { NewAddress } from "../models/location";
 
 export async function createAddressUseCase(data: NewAddress) {
-  const city = await LocationRepository.findCityById(data.cidadeId);
+  const city = await LocationRepository.findCityById(data.cityID);
 
   if (!city) {
     throw new NotFoundError("Esta cidade não existe.");

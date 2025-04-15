@@ -86,7 +86,7 @@ export const LocationRepository = {
     return db
       .select()
       .from(addressTable)
-      .where(eq(addressTable.cidadeId, cidadeId));
+      .where(eq(addressTable.cityID, cidadeId));
   },
 
   async findAllAddresses() {
