@@ -1,3 +1,4 @@
+import Navbar from "./_components/Navbar";
 import styles from "./layout.module.css";
 
 type Props = {
@@ -7,6 +8,7 @@ type Props = {
 export default function PublicLayout({ children }: Props) {
   return (
     <div>
+      <Navbar />
       <main className={styles.main}>{children}</main>
     </div>
   );

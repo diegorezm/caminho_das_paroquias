@@ -1,0 +1,38 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.input-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+
+.state-select {
+  font-size: var(--fs-sm);
+  background-color: var(--primary);
+  color: var(--on-primary);
+  border: none;
+  border-radius: var(--radius);
+  padding: 0.5em 2em;
+  flex-grow: 1;
+}
+
+.state-option {
+  border-radius: var(--radius);
+}
+
+.state-select:hover {
+  cursor: pointer;
+}
+
+@media (min-width: 768px) {
+  .input-container {
+    width: 50%;
+    flex-direction: row;
+  }
+}

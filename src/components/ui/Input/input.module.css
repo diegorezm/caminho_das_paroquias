@@ -3,6 +3,7 @@
   border-radius: var(--radius);
   outline: none;
   transition: all 0.2s ease-in-out;
+  width: 100%;
 }
 
 .input-default {
