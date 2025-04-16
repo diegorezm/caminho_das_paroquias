@@ -1,31 +1,31 @@
 import Button from "@/components/ui/Button";
-import { CardBody, CardRoot, CardTitle } from "@/components/ui/Card";
 import styles from "./index.module.css";
+import Image from "next/image";
+import Link from "next/link";
 
 export default async function Home() {
-  const variants = ["primary", "secondary", "outline", "ghost"] as const;
   return (
-    <div className={styles.list}>
-      <h1>Variants</h1>
-      {variants.map((e, i) => (
-        <div key={i}>
-          <Button variant={e}>{e}</Button>
-          <br />
-        </div>
-      ))}
-      <h1>Cards</h1>
-
-      <CardRoot variant="outline">
-        <CardTitle title="Lorem ipsum" description="lorem ispum?" />
-        <CardBody>
-          <p>
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. A magni
-            enim adipisci facilis nulla perferendis fuga obcaecati reiciendis
-            maiores totam similique illo nisi, culpa eaque? Illo autem totam
-            eveniet numquam?
-          </p>
-        </CardBody>
-      </CardRoot>
+    <div className={styles.container}>
+      <div className={styles["content-wrapper"]}>
+        <h1 className={styles["page-title"]}>Caminho das paróquias!</h1>
+        <p className={styles["page-description"]}>
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Optio iste
+          molestias nobis iure neque. Id eos molestiae, explicabo quae ullam
+          inventore magnam autem sequi alias soluta nulla officia? Consectetur,
+          itaque.
+        </p>
+        <Link className={styles["button-container"]} href="/procurar">
+          <Button>Encontre uma paróquia!</Button>
+        </Link>
+      </div>
+      <div className={styles["image-wrapper"]}>
+        <Image
+          src="/undraw_right-direction.svg"
+          height={250}
+          width={250}
+          alt="Homem olhando para uma placa."
+        />
+      </div>
     </div>
   );
 }
