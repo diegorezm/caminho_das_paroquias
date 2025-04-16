@@ -2,7 +2,13 @@ import { db } from "@/server/db";
 import { addressTable, churchTable, cityTable } from "@/server/db/schema";
 
 import type { NewChurch, Church } from "../models/church";
-import { eq } from "drizzle-orm";
+import { eq, or, sql } from "drizzle-orm";
+
+type FindAllFilter = {
+  order: "asc" | "desc";
+  name?: string;
+  city?: string;
+};
 
 export const ChurchRepository = {
   async create(church: NewChurch) {
@@ -53,18 +59,40 @@ export const ChurchRepository = {
     return results.length > 0 ? results : null;
   },
 
-  async findAll() {
-    const results = await db.select().from(churchTable);
-    return results;
-  },
-
-  async findAllWithLocation() {
-    const results = await db
+  async findAll(filter: FindAllFilter) {
+    const query = db
       .select()
       .from(churchTable)
       .innerJoin(addressTable, eq(churchTable.id, addressTable.id))
       .innerJoin(cityTable, eq(addressTable.cityID, cityTable.id));
-    return results;
+
+    const filters = [];
+
+    if (filter.name) {
+      filters.push(sql`${churchTable.name} LIKE ${`%${filter.name}%`}`);
+    }
+
+    if (filter.city) {
+      filters.push(sql`${cityTable.nome} LIKE ${`%${filter.city}%`}`);
+    }
+
+    if (filter.order) {
+      query.orderBy(
+        filter.order === "asc"
+          ? sql`${churchTable.id} ASC`
+          : sql`${churchTable.id} DESC`,
+      );
+    } else {
+      query.orderBy(sql`${churchTable.id} ASC`);
+    }
+
+    if (filters.length > 0) {
+      query.where(or(...filters));
+    }
+
+    const data = await query.execute();
+
+    return data;
   },
 
   async findAllByEstate(estate: string) {
