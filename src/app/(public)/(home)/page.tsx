@@ -21,8 +21,8 @@ export default async function Home() {
       <div className={styles["image-wrapper"]}>
         <Image
           src="/undraw_right-direction.svg"
-          height={250}
-          width={250}
+          height={400}
+          width={400}
           alt="Homem olhando para uma placa."
         />
       </div>
