@@ -2,7 +2,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import { AUTH_COOKIE_KEY } from "./server/modules/auth/constants";
 
 const privateRoutes: Record<string, boolean> = {
-  "/dashboard": true,
+  "/dashboard": false,
 };
 
 export function middleware(request: NextRequest) {

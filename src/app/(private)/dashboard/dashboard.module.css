@@ -1,0 +1,26 @@
+.main {
+  margin-left: 250px;
+  padding: 5px 15px;
+}
+
+.desktopNav {
+  display: block;
+}
+
+.mobileNav {
+  display: none;
+}
+
+@media screen and (max-width: 768px) {
+  .desktopNav {
+    display: none;
+  }
+
+  .mobileNav {
+    display: block;
+  }
+
+  .main {
+    margin-left: 0px;
+  }
+}
