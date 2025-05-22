@@ -7,7 +7,7 @@
 }
 
 .input-default {
-  border: 2px solid var(--foreground);
+  border: 2px solid var(--surface);
   color: var(--foreground);
 }
 
