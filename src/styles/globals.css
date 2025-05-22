@@ -15,24 +15,24 @@
   --error: #d81e5b;
   --on-error: #000000;
 
-  --padding-xs: 4px;
-  --padding-sm: 8px;
-  --padding-md: 16px;
-  --padding-lg: 24px;
-  --padding-xl: 32px;
+  --padding-xs: 2px;
+  --padding-sm: 4px;
+  --padding-md: 8px;
+  --padding-lg: 16px;
+  --padding-xl: 24px;
 
-  --margin-xs: 4px;
-  --margin-sm: 8px;
-  --margin-md: 16px;
-  --margin-lg: 24px;
-  --margin-xl: 32px;
+  --margin-xs: 2px;
+  --margin-sm: 4px;
+  --margin-md: 8px;
+  --margin-lg: 16px;
+  --margin-xl: 24px;
 
-  --fs-xs: 12px;
-  --fs-sm: 16px;
-  --fs-md: 20px;
-  --fs-lg: 24px;
-  --fs-xl: 32px;
-  --fs-xxl: 40px;
+  --fs-xs: 10px;
+  --fs-sm: 14px;
+  --fs-md: 18px;
+  --fs-lg: 22px;
+  --fs-xl: 28px;
+  --fs-xxl: 36px;
 
   --radius: 6px;
 }
@@ -41,18 +41,6 @@ html,
 body {
   padding: 0;
   margin: 0;
-  font-family:
-    -apple-system,
-    BlinkMacSystemFont,
-    Segoe UI,
-    Roboto,
-    Oxygen,
-    Ubuntu,
-    Cantarell,
-    Fira Sans,
-    Droid Sans,
-    Helvetica Neue,
-    sans-serif;
   background-color: var(--background);
   color: var(--foreground);
   font-size: var(--fs-sm);
