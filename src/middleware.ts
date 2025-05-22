@@ -1,5 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { AUTH_COOKIE_KEY } from "./server/modules/auth/constants";
+import { AUTH_COOKIE_KEY } from "./lib/auth";
 
 const privateRoutes: Record<string, boolean> = {
   "/dashboard": false,
@@ -8,9 +8,35 @@ const privateRoutes: Record<string, boolean> = {
 export function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
   const hasToken = request.cookies.has(AUTH_COOKIE_KEY);
+
   if (privateRoutes[pathname] && !hasToken) {
-    // TODO: Send user to /sign-in
     return NextResponse.redirect(new URL("/", request.url));
+  }
+
+  // CSRF protection
+  if (request.method === "GET") {
+    return NextResponse.next();
+  }
+  const originHeader = request.headers.get("Origin");
+  // NOTE: You may need to use `X-Forwarded-Host` instead
+  const hostHeader = request.headers.get("Host");
+  if (originHeader === null || hostHeader === null) {
+    return new NextResponse(null, {
+      status: 403
+    });
+  }
+  let origin: URL;
+  try {
+    origin = new URL(originHeader);
+  } catch {
+    return new NextResponse(null, {
+      status: 403
+    });
+  }
+  if (origin.host !== hostHeader) {
+    return new NextResponse(null, {
+      status: 403
+    });
   }
   return NextResponse.next();
 }
