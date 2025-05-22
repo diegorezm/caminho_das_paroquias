@@ -1,6 +1,3 @@
-// Example model schema from the Drizzle docs
-// https://orm.drizzle.team/docs/sql-schema-declaration
-
 import {
   index,
   integer,
@@ -10,14 +7,10 @@ import {
   char,
   uuid,
   varchar,
+  foreignKey,
+  pgEnum,
 } from "drizzle-orm/pg-core";
 
-/**
- * This is an example of how to use the multi-project schema feature of Drizzle ORM. Use the same
- * database instance for multiple projects.
- *
- * @see https://orm.drizzle.team/docs/goodies#multi-project-schema
- */
 export const createTable = pgTableCreator(
   (name) => `caminho_das_paroquias_${name}`,
 );
@@ -27,11 +20,14 @@ const timestamps = {
   updatedAt: timestamp("updated_at").defaultNow(),
 };
 
+export const userRoles = pgEnum("user_roles", ["ADMIN", "USER"])
+
 export const usersTable = createTable("users", {
   id: uuid("id").defaultRandom().primaryKey(),
-  name: varchar("name", { length: 255 }).notNull(),
-  email: varchar("email", { length: 255 }).unique().notNull(),
+  name: varchar("name", { length: 256 }).notNull(),
+  email: varchar("email", { length: 256 }).unique().notNull(),
   password: text("password").notNull(),
+  role: userRoles("role").default("USER").notNull(),
   ...timestamps,
 });
 
@@ -40,8 +36,7 @@ export const sessionsTable = createTable(
   {
     id: text("id").primaryKey(),
     userId: uuid("user_id")
-      .notNull()
-      .references(() => usersTable.id),
+      .notNull(),
     expiresAt: timestamp("expires_at", {
       withTimezone: true,
       mode: "date",
@@ -49,45 +44,69 @@ export const sessionsTable = createTable(
   },
   (table) => ({
     userIdIdx: index("sessions_user_id_idx").on(table.userId),
+    userFk: foreignKey({
+      columns: [table.userId],
+      name: "sessions_user_fk",
+      foreignColumns: [usersTable.id]
+    }).onDelete("cascade"),
   }),
 );
 
-export const estateTable = createTable("estado", {
-  sigla: char("sigla", { length: 2 }).primaryKey(),
+export const estatesTable = createTable("estates", {
+  code: char("code", { length: 2 }).primaryKey(),
+  name: varchar("name", { length: 256 }).notNull()
 });
 
-export const cityTable = createTable("cidade", {
+export const cityTable = createTable("cities", {
   id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
-  nome: varchar("nome", { length: 200 }).notNull(),
-  estado: char("estado", { length: 2 })
+  name: varchar("name", { length: 256 }).notNull(),
+  stateCode: char("state_code", { length: 2 })
     .notNull()
-    .references(() => estateTable.sigla, { onDelete: "cascade" }),
+    .references(() => estatesTable.code, { onDelete: "cascade" }),
 });
 
-export const addressTable = createTable("endereco", {
+export const addressTable = createTable("addresses", {
   id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
-  cep: varchar("cep", { length: 9 }),
-  street: varchar("rua", { length: 200 }),
-  bairro: varchar("bairro", { length: 200 }),
-  houseNumber: varchar("numero", { length: 6 }),
-  cityID: integer("cidade_id")
+  zipCode: varchar("zip_code", { length: 9 }),
+  street: varchar("street", { length: 256 }),
+  neighborhood: varchar("neighborhood", { length: 256 }),
+  houseNumber: varchar("house_number", { length: 6 }),
+  cityId: integer("city_id")
     .notNull()
     .references(() => cityTable.id, { onDelete: "cascade" }),
 });
 
 export const churchTable = createTable(
-  "igreja",
+  "churches",
   {
     id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
-    name: varchar("nome", { length: 250 }).notNull(),
-    attendant: varchar("atendente", { length: 250 }),
-    email: varchar("email", { length: 100 }).unique(),
-    contactNumber: varchar("numero_contato", { length: 15 }),
-    addressID: integer("endereco_id")
+    name: varchar("name", { length: 256 }).notNull(),
+    contactPerson: varchar("contact_person", { length: 256 }),
+    email: varchar("email", { length: 256 }).unique(),
+    phoneNumber: varchar("phone_number", { length: 15 }),
+    addressId: integer("address_id")
       .notNull()
       .references(() => addressTable.id, { onDelete: "cascade" }),
   },
   (table) => ({
-    enderecoIdx: index("endereco_igreja_idx").on(table.addressID),
+    addressIdx: index("churches_address_id_idx").on(table.addressId),
   }),
 );
+
+export type User = typeof usersTable.$inferSelect
+export type UserInsert = typeof usersTable.$inferInsert
+export type UserSafe = Omit<User, "password">
+
+export type Session = typeof sessionsTable.$inferSelect
+
+export type Estate = typeof estatesTable.$inferSelect
+export type EstateInsert = typeof estatesTable.$inferInsert
+
+export type City = typeof cityTable.$inferSelect
+export type CityInsert = typeof cityTable.$inferInsert
+
+export type Address = typeof addressTable.$inferSelect
+export type AddressInsert = typeof addressTable.$inferInsert
+
+export type Church = typeof churchTable.$inferSelect
+export type ChurchInsert = typeof churchTable.$inferInsert
