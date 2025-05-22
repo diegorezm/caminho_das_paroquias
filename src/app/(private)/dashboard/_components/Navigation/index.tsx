@@ -9,12 +9,12 @@ import Link from "next/link";
 const ROUTES = [
   {
     label: "Igrejas",
-    href: "/dashboard",
+    href: "/dashboard/churches",
     Icon: <Church className={styles.icon} />
   },
   {
     label: "Endereços",
-    href: "/dashboard/address",
+    href: "/dashboard/addresses",
     Icon: <MapPinHouse className={styles.icon} />
   },
   {
