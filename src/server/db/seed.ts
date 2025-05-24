@@ -2,6 +2,7 @@ import { db } from "./index.js";
 import { config } from "dotenv";
 import { usersTable } from "./schema";
 import { exit } from "node:process";
+import { hash } from "@/lib/hasher.js";
 
 config()
 
@@ -14,10 +15,12 @@ async function createAdminUser() {
     throw new Error("Please provide ADMIN_USER_EMAIL, ADMIN_USER_PASSWORD and ADMIN_USER_NAME in .env file")
   }
 
+  const newPassword = hash(password)
+
   await db.insert(usersTable).values({
     name,
     email,
-    password,
+    password: newPassword,
     role: "ADMIN"
   }).onConflictDoNothing()
 }

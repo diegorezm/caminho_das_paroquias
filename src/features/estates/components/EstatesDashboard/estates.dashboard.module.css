@@ -1,0 +1,14 @@
+.container {
+  padding: var(--padding-lg);
+  color: var(--on-surface);
+}
+
+.h1 {
+  font-size: var(--fs-xl);
+  margin-bottom: var(--margin-lg);
+}
+
+.error {
+  font-size: var(--fs-sm);
+  color: var(--error);
+}

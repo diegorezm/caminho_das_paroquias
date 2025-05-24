@@ -1,5 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { AUTH_COOKIE_KEY } from "./lib/auth";
+
+const AUTH_COOKIE_KEY = "caminho_das_paroquias_auth"
 
 const privateRoutes: Record<string, boolean> = {
   "/dashboard": false,

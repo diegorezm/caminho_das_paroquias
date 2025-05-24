@@ -1,0 +1,29 @@
+.table {
+  width: 100%;
+  margin: auto;
+  border-radius: var(--radius);
+  border: 2px solid var(--primary);
+}
+
+.tableRow {
+  border-bottom: 2px solid var(--primary);
+
+}
+
+.tableRow td {
+  padding: var(--padding-sm);
+  text-align: left;
+  margin-top: 5px;
+}
+
+.tableActions {
+  display: flex;
+  justify-content: center;
+}
+
+.iconBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  margin-right: var(--margin-xs);
+}

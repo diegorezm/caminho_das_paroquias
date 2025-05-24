@@ -1,0 +1,21 @@
+.form {
+  display: flex;
+  flex-direction: row;
+  gap: var(--padding-sm);
+  flex-wrap: wrap;
+  margin-bottom: var(--margin-lg);
+  align-items: center;
+}
+
+.formField {
+  width: 20%;
+}
+
+.cancelBtn {
+  background-color: transparent;
+  color: var(--primary);
+  border: 1px solid var(--primary);
+  padding: var(--padding-sm) var(--padding-md);
+  border-radius: var(--radius);
+  cursor: pointer;
+}

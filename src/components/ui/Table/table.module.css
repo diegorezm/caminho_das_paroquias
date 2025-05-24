@@ -1,0 +1,36 @@
+.table,
+.tableHeader,
+.tableRow {
+  border: 1px solid var(--primary);
+}
+
+.table {
+  width: 100%;
+  margin: auto;
+  border-collapse: collapse;
+  border-radius: var(--radius);
+}
+
+.tableHeader th {
+  padding: var(--padding-sm);
+  background-color: var(--primary);
+  color: var(--on-primary);
+  text-align: center;
+}
+
+.tableRow td {
+  padding: var(--padding-md);
+  text-align: left;
+}
+
+.tableActions {
+  display: flex;
+  justify-content: center;
+}
+
+.iconBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  margin-right: var(--margin-xs);
+}

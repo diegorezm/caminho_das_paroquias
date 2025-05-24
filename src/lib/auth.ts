@@ -9,7 +9,7 @@ import { USERS_REPOSITORY } from "@/server/data_access/users"
 import { ERROR_MESSAGES_PT_BR, PublicError } from "./errors"
 
 import { cookies } from "next/headers"
-import { compare } from "./hasher"
+import { compare, hash } from "./hasher"
 
 export const AUTH_COOKIE_KEY = "caminho_das_paroquias_auth"
 
@@ -35,7 +35,9 @@ export async function register({ name, email, password }: RegisterPayload) {
     throw new PublicError(ERROR_MESSAGES_PT_BR.userAlreadyExists)
   }
 
-  await USERS_REPOSITORY.create({ name, email, password })
+  const newPassword = hash(password)
+
+  await USERS_REPOSITORY.create({ name, email, password: newPassword })
 }
 
 

@@ -1,6 +1,7 @@
+import { getEstates } from "@/features/estates/actions";
 import { getQueryClient } from "@/lib/get-query-client";
-import EstatesDashboard from "./estate";
-import { getEstates } from "./actions";
+
+import EstatesDashboard from "@/features/estates/components/EstatesDashboard";
 
 export default async function EstatesDashboardPage() {
   const queryClient = getQueryClient()
