@@ -60,7 +60,7 @@ export const estatesTable = createTable("estates", {
 export const cityTable = createTable("cities", {
   id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
   name: varchar("name", { length: 256 }).notNull(),
-  stateCode: char("state_code", { length: 2 })
+  estateCode: char("estate_code", { length: 2 })
     .notNull()
     .references(() => estatesTable.code, { onDelete: "cascade" }),
 });

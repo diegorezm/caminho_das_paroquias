@@ -3,7 +3,7 @@ import styles from "./index.module.css";
 import Image from "next/image";
 import Link from "next/link";
 
-export default async function Home() {
+export default function Home() {
   return (
     <div className={styles.container}>
       <div className={styles["content-wrapper"]}>

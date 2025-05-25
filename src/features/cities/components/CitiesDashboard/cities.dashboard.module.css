@@ -3,15 +3,18 @@
   color: var(--on-surface);
 }
 
-.h1 {
-  font-size: var(--fs-xl);
-  margin-bottom: var(--margin-lg);
+.navigation {
+  display: flex;
+  justify-content: end;
+  width: 100%;
+  margin-bottom: 12px;
 }
 
 .error {
   font-size: var(--fs-sm);
   color: var(--error);
 }
+
 
 .deleteDialogAction {
   display: flex;

@@ -8,7 +8,7 @@ import { ESTATES_REPOSITORY } from "@/server/data_access/estates"
 import { z } from "zod"
 import { tryCatch } from "@/lib/try_catch"
 
-export async function getEstates() {
+export async function findAllEstates() {
   if (await getSession() !== undefined) {
     return ESTATES_REPOSITORY.findAll()
   }
@@ -21,12 +21,19 @@ const createEstateSchema = z.object({
 })
 
 export async function createEstate(_prevState: unknown, formData: FormData): Promise<ActionState> {
+  if (await getSession() === undefined) {
+    return {
+      status: "error",
+      errors: {
+        general: [ERROR_MESSAGES_PT_BR.unauthorized]
+      }
+    }
+  }
+
   const validatedFields = createEstateSchema.safeParse({
     code: formData.get('code'),
     name: formData.get('name'),
   })
-
-  console.log(validatedFields)
 
   if (!validatedFields.success) {
     return {
@@ -59,6 +66,14 @@ export async function createEstate(_prevState: unknown, formData: FormData): Pro
 }
 
 export async function updateEstate(_prevState: unknown, formData: FormData): Promise<ActionState> {
+  if (await getSession() === undefined) {
+    return {
+      status: "error",
+      errors: {
+        general: [ERROR_MESSAGES_PT_BR.unauthorized]
+      }
+    }
+  }
   const validatedFields = createEstateSchema.safeParse({
     code: formData.get('code'),
     name: formData.get('name'),
@@ -94,6 +109,14 @@ export async function updateEstate(_prevState: unknown, formData: FormData): Pro
 }
 
 export async function deleteEstate(code: string): Promise<ActionState> {
+  if (await getSession() === undefined) {
+    return {
+      status: "error",
+      errors: {
+        general: [ERROR_MESSAGES_PT_BR.unauthorized]
+      }
+    }
+  }
   const result = await tryCatch(ESTATES_REPOSITORY.remove(code))
   if (result.error) {
     return {

@@ -6,23 +6,27 @@ import { useQuery } from "@tanstack/react-query";
 import { getFieldError } from "@/lib/action-state";
 import { getQueryClient } from "@/lib/get-query-client";
 
-import { createEstate, deleteEstate, getEstates, updateEstate } from "../../actions";
+import { createEstate, deleteEstate, findAllEstates, updateEstate } from "../../actions";
 
 import type { Estate } from "@/server/db/schema";
 
 import Loader from "@/components/Loader";
 import EstatesForm from "../EstatesForm";
 import EstatesTable from "../EstatesTable";
+import Dialog from "@/components/ui/Dialog";
+import Button from "@/components/ui/Button";
 
 export default function EstatesDashboard() {
   const queryClient = getQueryClient()
-  const { data: estates, error: estatesError, isError: isEstatesError, isPending: isEstatesPending } = useQuery({ queryKey: ["estates"], queryFn: getEstates })
+  const { data: estates, error: estatesError, isError: isEstatesError, isPending: isEstatesPending } = useQuery({ queryKey: ["estates"], queryFn: findAllEstates })
 
   const [createState, createEstateAction, createPending] = useActionState(createEstate, null)
   const [updateState, updateEstateAction, updatePending] = useActionState(updateEstate, null)
 
   const [form, setForm] = useState({ code: "", name: "" });
   const [editing, setEditing] = useState(false);
+  const [isDeleteDialog, setIsDeleteDialog] = useState(false);
+  const [estateToDelete, setEstateToDelete] = useState<Estate | null>(null)
 
   const resetForm = () => {
     setForm({ code: "", name: "" });
@@ -34,8 +38,9 @@ export default function EstatesDashboard() {
     setEditing(true);
   };
 
-  const handleDelete = async (estate: Estate) => {
-    const result = await deleteEstate(estate.code)
+  const handleDelete = async () => {
+    if (estateToDelete === null) return
+    const result = await deleteEstate(estateToDelete.code)
 
     if (result.status === "error") {
       console.error("Something went wrong while deleting estate.")
@@ -44,6 +49,9 @@ export default function EstatesDashboard() {
         console.error(e)
       })
     }
+
+    setIsDeleteDialog(false)
+    setEstateToDelete(null)
   }
 
   useEffect(() => {
@@ -68,8 +76,22 @@ export default function EstatesDashboard() {
       {isEstatesPending && <Loader />}
 
       {estatesError === null && !isEstatesPending && (
-        <EstatesTable estates={estates} handleEdit={handleEdit} handleDelete={handleDelete} />
+        <EstatesTable estates={estates} handleEdit={handleEdit} handleDelete={(estate) => {
+          setIsDeleteDialog(true)
+          setEstateToDelete(estate)
+        }} />
       )}
+
+      <Dialog title={`Tem certeza que deseja remover ${estateToDelete?.name}? `} isOpen={isDeleteDialog} onClose={() => setIsDeleteDialog(false)}>
+        <div className={styles.deleteDialogAction}>
+          <Button onClick={() => setIsDeleteDialog(false)} variant="outline">
+            Cancelar
+          </Button>
+          <Button onClick={handleDelete} variant="primary">
+            Remover
+          </Button>
+        </div>
+      </Dialog>
     </div>
   );
 }

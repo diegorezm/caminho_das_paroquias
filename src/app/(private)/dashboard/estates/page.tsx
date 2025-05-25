@@ -1,4 +1,4 @@
-import { getEstates } from "@/features/estates/actions";
+import { findAllEstates } from "@/features/estates/actions";
 import { getQueryClient } from "@/lib/get-query-client";
 
 import EstatesDashboard from "@/features/estates/components/EstatesDashboard";
@@ -8,7 +8,7 @@ export default async function EstatesDashboardPage() {
 
   await queryClient.prefetchQuery({
     queryKey: ["estates"],
-    queryFn: getEstates
+    queryFn: findAllEstates
   })
 
   return <EstatesDashboard />

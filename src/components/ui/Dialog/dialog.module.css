@@ -1,0 +1,123 @@
+.dialogOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  /* Semi-transparent overlay */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  /* Ensure it's on top of most content */
+}
+
+.dialogContent {
+  background-color: var(--surface);
+  color: var(--on-surface);
+  padding: var(--padding-lg);
+  border-radius: var(--radius);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  max-width: 90vw;
+  /* Adjust as needed */
+  max-height: 90vh;
+  /* Adjust as needed */
+  overflow-y: auto;
+  /* Enable scrolling if content exceeds max-height */
+  display: flex;
+  flex-direction: column;
+  gap: var(--margin-md);
+  /* Spacing between elements inside the dialog */
+}
+
+.dialogHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: var(--padding-sm);
+  /* Space below the header */
+  border-bottom: 1px solid var(--on-surface);
+  /* Separator */
+}
+
+.dialogTitle {
+  font-size: var(--fs-lg);
+  font-weight: bold;
+}
+
+.dialogCloseButton {
+  background: none;
+  border: none;
+  color: var(--on-surface);
+  font-size: var(--fs-xl);
+  cursor: pointer;
+  padding: var(--padding-xs);
+  line-height: 1;
+  /* Remove extra space around the 'x' */
+}
+
+.dialogCloseButton:hover {
+  opacity: 0.8;
+}
+
+.dialogBody {
+  flex-grow: 1;
+  /* Allow the body to take up available space */
+}
+
+.dialogActions {
+  display: flex;
+  justify-content: flex-end;
+  /* Align buttons to the right */
+  gap: var(--margin-sm);
+  /* Space between action buttons */
+  padding-top: var(--padding-sm);
+  /* Space above actions */
+  border-top: 1px solid var(--on-surface);
+  /* Separator */
+}
+
+/* Sizes for dialog */
+.dialog-sm {
+  width: 300px;
+}
+
+.dialog-md {
+  width: 500px;
+}
+
+.dialog-lg {
+  width: 700px;
+}
+
+/* Optional: Animation for appearing/disappearing */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.dialogOverlay.open {
+  animation: fadeIn 0.2s ease-out forwards;
+}
+
+.dialogContent.open {
+  animation: slideIn 0.3s ease-out forwards;
+}
