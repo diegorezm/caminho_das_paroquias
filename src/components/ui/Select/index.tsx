@@ -29,7 +29,7 @@ export default function Select({
     <div className={style.selectContainer}>
       <select className={selectClass} {...props}>
         {placeholder && (
-          <option value="" disabled selected={!props.value}>
+          <option value={placeholder} disabled>
             {placeholder}
           </option>
         )}

@@ -1,0 +1,22 @@
+.container {
+  padding: var(--padding-lg);
+  color: var(--on-surface);
+}
+
+.navigation {
+  display: flex;
+  justify-content: end;
+  width: 100%;
+  margin-bottom: 12px;
+}
+
+.error {
+  font-size: var(--fs-sm);
+  color: var(--error);
+}
+
+
+.deleteDialogAction {
+  display: flex;
+  gap: 12px;
+}

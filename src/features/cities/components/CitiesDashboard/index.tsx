@@ -11,7 +11,7 @@ import CitiesForm from "../CitiesForm"
 
 import { useActionState, useEffect, useState } from "react"
 
-import type { City, CityInsert } from "@/server/db/schema"
+import type { City } from "@/server/db/schema"
 import { getFieldError } from "@/lib/action-state"
 import { getQueryClient } from "@/lib/get-query-client"
 import Dialog from "@/components/ui/Dialog"

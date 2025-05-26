@@ -18,15 +18,16 @@ export function FormError({ state }: Props) {
 
 type FormFieldProps = {
   label?: string;
+  htmlFor?: string;
   error?: string | string[];
   children: ReactNode;
 };
 
-export function FormField({ label, error, children }: FormFieldProps) {
+export function FormField({ label, error, children, htmlFor }: FormFieldProps) {
   const err = Array.isArray(error) ? error.join("\n") : error
   return (
     <div className={styles.field}>
-      {label && <label className={styles.label}>{label}</label>}
+      {label && <label className={styles.label} htmlFor={htmlFor}>{label}</label>}
       {children}
       {error && <p className={styles.error}>{err}</p>}
     </div>

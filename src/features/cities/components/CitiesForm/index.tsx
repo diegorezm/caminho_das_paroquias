@@ -51,7 +51,7 @@ export default function CitiesForm({ action, values, setValues, editing = false,
           <Select
             name="estate"
             options={estateOptions}
-            value={values.estateCode || ""}
+            value={values.estateCode}
             onChange={(e) => setValues({ ...values, estateCode: e.target.value })}
             placeholder="Selecione o Estado"
             required
@@ -61,7 +61,7 @@ export default function CitiesForm({ action, values, setValues, editing = false,
         )}
       </div>
 
-      <input type="number" name="cityId" value={values.id} hidden />
+      <input type="number" name="cityId" defaultValue={values.id} hidden disabled />
 
       <div>
         <Button type="submit" size="lg" disabled={pending}>
