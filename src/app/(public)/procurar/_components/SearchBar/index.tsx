@@ -2,7 +2,6 @@
 import Input from "@/components/ui/Input";
 import styles from "./searchbar.module.css";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useCallback } from "react";
 
 type Props = {
   filter: {

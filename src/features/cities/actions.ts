@@ -114,9 +114,18 @@ export async function updateCity(_prev: unknown, formData: FormData): Promise<Ac
     }
   }
 
-  const cityIdRaw = formData.get("cityId")
 
-  if (!cityIdRaw) {
+  const cityIdFormDataValue = formData.get("cityId");
+
+  let cityId: number | undefined;
+  if (typeof cityIdFormDataValue === 'string' && cityIdFormDataValue.length > 0) {
+    const parsedCityId = parseInt(cityIdFormDataValue, 10);
+    if (!isNaN(parsedCityId) && parsedCityId > 0) {
+      cityId = parsedCityId;
+    }
+  }
+
+  if (!cityId) {
     return {
       status: "error",
       errors: {
@@ -124,8 +133,6 @@ export async function updateCity(_prev: unknown, formData: FormData): Promise<Ac
       }
     }
   }
-
-  const cityId = Number.parseInt(cityIdRaw.toString())
 
   const formattedData = formatFormData(formData)
 
