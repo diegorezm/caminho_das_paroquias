@@ -14,8 +14,16 @@
   color: var(--beige-color);
   font-weight: bold;
 }
+
 .error {
   color: var(--beige-color);
   font-weight: 600;
   font-size: var(--fs-sm);
+}
+
+.actions {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  gap: 12px;
 }

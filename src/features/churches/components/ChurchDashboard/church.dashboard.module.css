@@ -1,0 +1,11 @@
+.container {
+  padding: var(--padding-lg);
+  color: var(--on-surface);
+}
+
+.navigation {
+  display: flex;
+  justify-content: end;
+  width: 100%;
+  margin-bottom: 12px;
+}

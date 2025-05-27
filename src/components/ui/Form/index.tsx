@@ -34,6 +34,19 @@ export function FormField({ label, error, children, htmlFor }: FormFieldProps) {
   );
 }
 
+type FormActionsProps = {
+  children?: ReactNode;
+  className?: string
+}
+export function FormActions({ children, className }: FormActionsProps) {
+  const classes = `${styles.actions} ${className}`
+  return (
+    <div className={classes}>
+      {children}
+    </div>
+  )
+}
+
 type FormProps = DetailedHTMLProps<
   FormHTMLAttributes<HTMLFormElement>,
   HTMLFormElement
