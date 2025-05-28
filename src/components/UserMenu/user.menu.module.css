@@ -1,0 +1,30 @@
+.menuItem {
+  display: flex;
+  align-items: center;
+  gap: var(--margin-sm);
+  padding: var(--padding-sm) var(--padding-md);
+  color: var(--on-surface);
+  text-decoration: none;
+  border-radius: var(--radius);
+  transition: background-color 0.2s ease, color 0.2s ease;
+  cursor: pointer;
+  font-size: var(--fs-sm);
+  width: 100%;
+  /* Make button fill the width */
+  text-align: left;
+  background: none;
+  border: none;
+}
+
+.menuItem:hover,
+.menuItem:focus {
+  background-color: var(--surface);
+  color: var(--primary);
+  outline: none;
+}
+
+.menuItem svg {
+  width: 18px;
+  height: 18px;
+  color: var(--secondary);
+}

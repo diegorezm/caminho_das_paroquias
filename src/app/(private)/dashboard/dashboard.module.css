@@ -11,6 +11,12 @@
   display: none;
 }
 
+.userNav {
+  position: absolute;
+  top: 2%;
+  right: 2%;
+}
+
 @media screen and (max-width: 768px) {
   .desktopNav {
     display: none;

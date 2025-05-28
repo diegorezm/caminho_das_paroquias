@@ -4,7 +4,6 @@
   align-items: center;
   padding-left: var(--padding-md);
   padding-right: var(--padding-md);
-  padding-top: var(--padding-sm);
 }
 
 .auth_links {
