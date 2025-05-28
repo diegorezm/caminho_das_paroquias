@@ -12,7 +12,7 @@ type Props = {
 };
 
 export default function CitiesTable({ cities, handleDelete, handleEdit }: Props) {
-  return (<Table headers={["ID", "Nome", "Estado", "Ações"]} emptyMessage="Nenhum estado cadastrado.">
+  return (<Table headers={["ID", "Nome", "Estado", "Ações"]} emptyMessage="Nenhuma cidade cadastrada.">
     {cities.map((city) => (
       <tr key={city.id} className={tableStyles.tableRow}>
         <td style={{ textAlign: "center" }}>{city.id}</td>

@@ -21,11 +21,11 @@ type Props = {
 
 export default function AddressForm({ action, state, initialValues, pending, onCancel }: Props) {
   const { data: cities, error: citiesError, isError: isCitiesError, isPending: isCitiesPending } = useQuery(({
-    queryFn: findAllCities,
+    queryFn: async () => await findAllCities({}),
     queryKey: ["cities"]
   }))
 
-  const citiesOptions: SelectOption[] = (cities ?? []).map(city => ({
+  const citiesOptions: SelectOption[] = (cities?.data ?? []).map(city => ({
     label: city.name,
     value: city.id.toString()
   }))

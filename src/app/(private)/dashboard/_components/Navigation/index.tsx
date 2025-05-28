@@ -1,12 +1,18 @@
 "use client";
 
-import { Building2, Church, MapPinHouse, Map } from "lucide-react";
+import { Building2, Church, MapPinHouse, Map, Users } from "lucide-react";
 
 import styles from "./navigation.module.css"
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 
-const ROUTES = [
+type Route = {
+  label: string;
+  href: string;
+  Icon: JSX.Element
+}
+
+const ROUTES: Route[] = [
   {
     label: "Igrejas",
     href: "/dashboard/churches",
@@ -29,6 +35,14 @@ const ROUTES = [
   },
 ]
 
+const ADMIN_ROUTES: Route[] = [
+  {
+    label: "Usuários",
+    href: "/dashboard/users",
+    Icon: <Users className={styles.icon} />
+  }
+]
+
 
 export default function Navigation() {
   const pathname = usePathname();
@@ -37,7 +51,7 @@ export default function Navigation() {
     <nav>
       <ul className={styles.list}>
         {ROUTES.map((route) => {
-          const isActive = pathname === route.href;
+          const isActive = pathname.startsWith(route.href);
 
           return (
             <li

@@ -18,11 +18,12 @@ import { useOpenCreateAddressDialog } from "../../hooks/use-open-create-address-
 import { useOpenUpdateAddressDialog } from "../../hooks/use-open-update-address-dialog"
 import CreateAddressDialog from "../CreateAddressDialog"
 import UpdateAddressDialog from "../UpdateAddressDialog"
+import Pagination from "@/components/Pagination"
 
 export default function AddressesDashboard() {
   const queryClient = getQueryClient()
   const { data: addresses, error: addressesError, isError: isAddressesError, isPending: isAddressesPending } = useQuery({
-    queryFn: findAllAddresses,
+    queryFn: async () => findAllAddresses({}),
     queryKey: ["addresses"]
   })
 
@@ -62,10 +63,12 @@ export default function AddressesDashboard() {
               Adicionar
             </Button>
           </div>
-          <AddressTable addresses={addresses} handleEdit={handleEdit} handleDelete={(address) => {
+          <AddressTable addresses={addresses.data} handleEdit={handleEdit} handleDelete={(address) => {
             setAddressToDelete(address.id)
             setIsDeleteDialog(true)
           }} />
+
+          <Pagination totalPages={addresses.pagination.pageCount} />
         </>
       )}
 

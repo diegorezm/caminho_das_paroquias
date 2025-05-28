@@ -4,17 +4,24 @@ import { z } from "zod"
 
 import { getSession } from "@/lib/auth"
 import { tryCatch } from "@/lib/try_catch"
-
-import { type ActionState } from "@/lib/action-state"
 import { ERROR_MESSAGES_PT_BR, PublicError } from "@/lib/errors"
 
 import { CHURCH_REPOSITORY } from "@/server/data_access/churches"
 
-export async function findAllChurches() {
+import type { ActionState } from "@/lib/action-state"
+import type { PaginatedAction } from "@/types/paginated-action"
+
+export async function findAllChurches({ limit = 10, page = 1, q }: PaginatedAction) {
   if (await getSession() === undefined) {
     throw new PublicError(ERROR_MESSAGES_PT_BR.unauthorized)
   }
-  return CHURCH_REPOSITORY.findAll()
+  const { data, error } = await tryCatch(CHURCH_REPOSITORY.findAll({ limit, page, q }))
+
+  if (error) {
+    throw error
+  }
+
+  return data
 }
 
 const churchSchema = z.object({

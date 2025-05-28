@@ -1,16 +1,26 @@
 "use server"
 
-import { type ActionState } from "@/lib/action-state"
-import { type EstateInsert } from "@/server/db/schema"
+import { z } from "zod"
+
 import { getSession } from "@/lib/auth"
 import { ERROR_MESSAGES_PT_BR, PublicError } from "@/lib/errors"
-import { ESTATES_REPOSITORY } from "@/server/data_access/estates"
-import { z } from "zod"
 import { tryCatch } from "@/lib/try_catch"
 
-export async function findAllEstates() {
+import { ESTATES_REPOSITORY } from "@/server/data_access/estates"
+
+import type { ActionState } from "@/lib/action-state"
+import type { EstateInsert } from "@/server/db/schema"
+import type { PaginatedAction } from "@/types/paginated-action"
+
+export async function findAllEstates({ limit = 10, page = 1, q }: PaginatedAction) {
   if (await getSession() !== undefined) {
-    return ESTATES_REPOSITORY.findAll()
+    const { data, error } = await tryCatch(ESTATES_REPOSITORY.findAll({ limit, page, q }))
+
+    if (error) {
+      throw error
+    }
+
+    return data
   }
   throw new PublicError(ERROR_MESSAGES_PT_BR.unauthorized)
 }
@@ -45,7 +55,7 @@ export async function createEstate(_prevState: unknown, formData: FormData): Pro
   const { code, name } = validatedFields.data
 
   const estate: EstateInsert = {
-    code,
+    code: code.toUpperCase(),
     name,
   }
 

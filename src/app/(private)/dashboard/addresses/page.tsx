@@ -1,13 +1,19 @@
 import { findAllAddresses } from "@/features/addresses/actions";
-import AddressesDashboard from "@/features/addresses/components/AdressesDashboard";
 import { getQueryClient } from "@/lib/get-query-client";
 
-export default async function AdressPage() {
+import type { PaginatedAction } from "@/types/paginated-action"
+
+import AddressesDashboard from "@/features/addresses/components/AdressesDashboard";
+
+export default async function AddressPage({ searchParams }: { searchParams: Promise<PaginatedAction> }) {
+  const { limit, page, q } = await searchParams;
   const queryClient = getQueryClient()
 
   await queryClient.prefetchQuery({
-    queryKey: ["addresses"],
-    queryFn: findAllAddresses
+    queryKey: ["addresses", { limit, page, q }],
+    queryFn: async () => {
+      return await findAllAddresses({ limit, page, q })
+    }
   })
   return <AddressesDashboard />
 }

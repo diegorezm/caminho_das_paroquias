@@ -1,60 +1,64 @@
-import styles from "./estateform.module.css"
-
 import Input from "@/components/ui/Input";
 import Button from "@/components/ui/Button";
 
-import { type EstateInsert } from "@/server/db/schema";
+import type { Estate } from "@/server/db/schema";
+import { Form, FormActions, FormField } from "@/components/ui/Form";
+import { getFieldError, type ActionState } from "@/lib/action-state";
 
 type Props = {
   action: (payload: FormData) => void;
-  values: EstateInsert;
-  setValues: (values: EstateInsert) => void
+  state: ActionState | null;
   pending?: boolean;
-  initialValues?: EstateInsert;
-  editing?: boolean;
-  resetForm?: VoidFunction
-}
+  initialValues?: Estate;
+  onCancel?: VoidFunction;
+};
 
-export default function EstatesForm({ action, values, setValues, editing = false, resetForm, pending = false }: Props) {
+export default function EstatesForm({
+  action,
+  state,
+  onCancel,
+  pending = false,
+  initialValues,
+}: Props) {
   return (
-    <form action={action} className={styles.form}>
-      <div className={styles.formField}>
+    <Form action={action}>
+      <FormField label="Código (UF)" htmlFor="code" error={getFieldError(state, "code")}>
         <Input
           type="text"
-          placeholder="Código (UF)"
+          placeholder="ex. SP"
+          id="code"
           maxLength={2}
-          value={values.code}
-          onChange={(e) => setValues({ ...values, code: e.target.value.toUpperCase() })}
+          defaultValue={initialValues?.code ?? ""}
           name="code"
           style={{
-            textTransform: "uppercase"
+            textTransform: "uppercase",
           }}
           required
+          disabled={pending}
         />
+      </FormField>
 
-      </div>
-      <div className={styles.formField}>
+      <FormField label="Nome do estado" htmlFor="name" error={getFieldError(state, "name")}>
         <Input
           type="text"
-          placeholder="Nome do estado"
-          value={values.name}
-          onChange={(e) => setValues({ ...values, name: e.target.value })}
+          placeholder="ex. São Paulo"
+          // Use defaultValue for uncontrolled inputs
+          defaultValue={initialValues?.name ?? ""}
           name="name"
+          id="name"
           required
+          disabled={pending}
         />
+      </FormField>
 
-      </div>
-      <div>
+      <FormActions>
         <Button type="submit" size="lg" disabled={pending}>
-          {editing ? "Salvar edição" : "Criar"}
+          {initialValues !== undefined ? "Salvar edição" : "Criar"}
         </Button>
-      </div>
-      {editing && (
-        <Button type="button" onClick={resetForm} variant="outline">
+        <Button type="button" onClick={onCancel} variant="outline" disabled={pending}>
           Cancelar
         </Button>
-      )}
-    </form>
-
-  )
+      </FormActions>
+    </Form>
+  );
 }

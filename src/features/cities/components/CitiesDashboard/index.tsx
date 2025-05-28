@@ -1,42 +1,42 @@
 "use client"
 
-import { useQuery } from "@tanstack/react-query"
-import { createCity, deleteCity, findAllCities, updateCity } from "../../actions"
-
 import styles from "./cities.dashboard.module.css"
 
-import Loader from "@/components/Loader"
-import CitiesTable from "../CitiesTable"
-import CitiesForm from "../CitiesForm"
-
-import { useActionState, useEffect, useState } from "react"
+import { useQuery } from "@tanstack/react-query"
+import { useState } from "react"
 
 import type { City } from "@/server/db/schema"
-import { getFieldError } from "@/lib/action-state"
+
+import { deleteCity, findAllCities, updateCity } from "../../actions"
+
 import { getQueryClient } from "@/lib/get-query-client"
+
 import Dialog from "@/components/ui/Dialog"
 import Button from "@/components/ui/Button"
+import Loader from "@/components/Loader"
+import CitiesTable from "../CitiesTable"
+import Pagination from "@/components/Pagination"
+import { useOpenUpdateCityDialog } from "../../hooks/use-open-update-city-dialog"
+import { useOpenCreateCityDialog } from "../../hooks/use-open-create-city-dialog"
+import CreateCityDialog from "../CreateCityDialog"
+import UpdateCityDialog from "../UpdateCityDialog"
+import { Plus } from "lucide-react"
 
 export default function CitiesDashboard() {
   const queryClient = getQueryClient()
   const { data: cities, error: citiesError, isError: isCitiesError, isPending: isCitiesPending } = useQuery({
-    queryFn: findAllCities,
+    queryFn: async () => {
+      return await findAllCities({})
+    },
     queryKey: ["cities"]
   })
 
-  const [form, setForm] = useState<City>({ id: 0, estateCode: "", name: "" })
-  const [isEditing, setIsEditing] = useState(false)
+  const { onOpen: onOpenUpdateCityDialog } = useOpenUpdateCityDialog()
+  const { onOpen: onOpenCreateCityDialog } = useOpenCreateCityDialog()
+
   const [isDeleteDialog, setIsDeleteDialog] = useState(false);
   const [cityToDelete, setCityToDelete] = useState<City | null>(null)
 
-  const [createCityState, createCityAction, createCityPending] = useActionState(createCity, null)
-  const [updateCityState, updateCityAction, updateCityPending] = useActionState(updateCity, null)
-
-
-  const handleEdit = (city: City) => {
-    setIsEditing(true)
-    setForm(city)
-  }
 
   const handleDelete = async () => {
     if (!cityToDelete) return
@@ -50,24 +50,6 @@ export default function CitiesDashboard() {
     }
   }
 
-  const resetForm = () => {
-    setForm({ id: 0, estateCode: "", name: "" })
-    setIsEditing(false)
-  }
-
-
-  useEffect(() => {
-    if (createCityState?.status === "success" || updateCityState?.status === "success") {
-      console.log("success")
-      resetForm()
-      queryClient.invalidateQueries({ queryKey: ["cities"] }).catch((e) => {
-        console.error(e)
-      })
-    } else {
-      console.log(createCityState)
-    }
-  }, [createCityState, updateCityState, queryClient])
-
   return (
     <div className={styles.container}>
       <h1>Cidades</h1>
@@ -75,20 +57,21 @@ export default function CitiesDashboard() {
 
       {isCitiesError && <p>Error: {citiesError?.message}</p>}
 
-      {createCityState?.status === "error" && (
-        <p className={styles.error}>{getFieldError(createCityState, "general")}</p>
-      )}
-      {updateCityState?.status === "error" && (
-        <p className={styles.error}>{getFieldError(updateCityState, "general")}</p>
-      )}
-
-      <CitiesForm action={isEditing ? updateCityAction : createCityAction} values={form} setValues={setForm} pending={createCityPending || updateCityPending} resetForm={resetForm} editing={isEditing} />
-
       {!isCitiesError && !isCitiesPending && (
-        <CitiesTable cities={cities} handleEdit={handleEdit} handleDelete={(city) => {
-          setCityToDelete(city)
-          setIsDeleteDialog(true)
-        }} />
+        <>
+          <nav className={styles.navigation}>
+            <Button onClick={onOpenCreateCityDialog} size="lg">
+              Adicionar
+            </Button>
+          </nav>
+          <CitiesTable cities={cities.data} handleEdit={(city) => {
+            onOpenUpdateCityDialog(city)
+          }} handleDelete={(city) => {
+            setCityToDelete(city)
+            setIsDeleteDialog(true)
+          }} />
+          <Pagination totalPages={cities.pagination.pageCount} />
+        </>
       )}
 
       <Dialog title={`Tem certeza que deseja remover ${cityToDelete?.name}? `} isOpen={isDeleteDialog} onClose={() => setIsDeleteDialog(false)}>
@@ -101,6 +84,8 @@ export default function CitiesDashboard() {
           </Button>
         </div>
       </Dialog>
+      <CreateCityDialog />
+      <UpdateCityDialog />
     </div>
   )
 }

@@ -1,24 +1,28 @@
 "use server"
 
-import type { ActionState } from "@/lib/action-state";
 import { getSession } from "@/lib/auth";
-import { ERROR_MESSAGES_PT_BR, PublicError } from "@/lib/errors";
+
 import { tryCatch } from "@/lib/try_catch";
+import { ERROR_MESSAGES_PT_BR, PublicError } from "@/lib/errors";
+
 import { CITIES_REPOSITORY } from "@/server/data_access/cities";
 import { ESTATES_REPOSITORY } from "@/server/data_access/estates";
-import type { City, CityInsert } from "@/server/db/schema";
+
+import type { CityInsert } from "@/server/db/schema";
+import type { PaginatedAction } from "@/types/paginated-action";
+import type { ActionState } from "@/lib/action-state";
+
 import { z } from "zod";
 
-export async function findAllCities(): Promise<City[]> {
+export async function findAllCities({ limit = 10, page = 1, q }: PaginatedAction) {
   if (await getSession() === undefined) {
     throw new PublicError(ERROR_MESSAGES_PT_BR.unauthorized)
   }
 
-  const { data, error } = await tryCatch(CITIES_REPOSITORY.findAll())
+  const { data, error } = await tryCatch(CITIES_REPOSITORY.findAll({ limit, page, q }))
 
   if (error) {
-    console.error(error)
-    throw new PublicError(ERROR_MESSAGES_PT_BR.unknown)
+    throw error
   }
 
   return data
@@ -115,7 +119,7 @@ export async function updateCity(_prev: unknown, formData: FormData): Promise<Ac
   }
 
 
-  const cityIdFormDataValue = formData.get("cityId");
+  const cityIdFormDataValue = formData.get("id");
 
   let cityId: number | undefined;
   if (typeof cityIdFormDataValue === 'string' && cityIdFormDataValue.length > 0) {

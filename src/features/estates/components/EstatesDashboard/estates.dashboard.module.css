@@ -17,3 +17,10 @@
   display: flex;
   gap: 12px;
 }
+
+.navigation {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  margin-bottom: 12px;
+}

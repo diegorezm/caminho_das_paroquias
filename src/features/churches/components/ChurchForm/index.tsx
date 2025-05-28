@@ -21,12 +21,12 @@ type Props = {
 
 export default function ChurchForm({ action, state, initialValues, pending, onCancel }: Props) {
   const { data: addresses, error: addressesError, isError: isAddressesError, isPending: isAddressesPending } = useQuery({
-    queryFn: findAllAddresses,
+    queryFn: async () => await findAllAddresses({}),
     queryKey: ["addresses"]
   })
 
 
-  const addressesOptions: SelectOption[] = (addresses ?? []).map((address) => ({
+  const addressesOptions: SelectOption[] = (addresses?.data ?? []).map((address) => ({
     label: `${address.street}, ${address.houseNumber} - ${address.neighborhood}, ${address.zipCode}`,
     value: address.id.toString(),
   }));

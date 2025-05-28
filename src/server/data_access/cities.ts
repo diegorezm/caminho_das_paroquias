@@ -1,10 +1,19 @@
 import { db } from "../db"
-import { eq } from "drizzle-orm"
+import { eq, ilike } from "drizzle-orm"
 import { type CityInsert, cityTable } from "../db/schema"
+import { type PaginatedProps, paginateQuery } from "../utils/drizzle-pagination"
 
 export const CITIES_REPOSITORY = {
-  async findAll() {
-    return db.query.cityTable.findMany()
+  async findAll({ page = 0, limit = 10, q }: PaginatedProps) {
+    const query = db.select().from(cityTable)
+
+    if (q) {
+      query.where(ilike(cityTable.name, q))
+    }
+
+    const paginated = await paginateQuery(query.$dynamic(), { page, limit })
+    console.log(paginated)
+    return paginated
   },
   async create(city: CityInsert) {
     await db.insert(cityTable).values(city)

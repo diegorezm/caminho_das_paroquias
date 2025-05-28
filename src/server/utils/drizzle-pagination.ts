@@ -12,6 +12,7 @@ interface PaginateParam {
   limit: number;
   page: number;
 }
+
 export async function paginateQuery<T extends PgSelect>(
   query: T,
   { limit, page }: PaginateParam,
@@ -24,8 +25,9 @@ export async function paginateQuery<T extends PgSelect>(
   const rowCountResult = await rowCountQuery.execute();
   const rowCount = Number(rowCountResult[0]?.total ?? 0);
   const pageCount = Math.ceil(rowCount / limit);
+  const offset = Math.abs((page - 1) * limit)
 
-  query.limit(limit).offset((page - 1) * limit);
+  query.limit(limit).offset(offset);
 
   const data = (await query.execute()) as Awaited<ReturnType<T["execute"]>>;
 

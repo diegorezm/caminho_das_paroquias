@@ -10,12 +10,20 @@ import { ADDRESS_REPOSITORY } from "@/server/data_access/address"
 import { tryCatch } from "@/lib/try_catch"
 
 import type { ActionState } from "@/lib/action-state"
+import type { PaginatedAction } from "@/types/paginated-action"
 
-export async function findAllAddresses() {
+export async function findAllAddresses({ limit = 10, page = 1, q }: PaginatedAction) {
   if (await getSession() === undefined) {
     throw new PublicError(ERROR_MESSAGES_PT_BR.unauthorized)
   }
-  return ADDRESS_REPOSITORY.findAll()
+
+  const { data, error } = await tryCatch(ADDRESS_REPOSITORY.findAll({ limit, page, q }))
+
+  if (error) {
+    throw error
+  }
+
+  return data
 }
 
 const addressSchema = z.object({

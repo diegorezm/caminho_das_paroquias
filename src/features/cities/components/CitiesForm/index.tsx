@@ -1,48 +1,67 @@
-import styles from "./cities.form.module.css"
 import { useQuery } from "@tanstack/react-query";
 import { findAllEstates } from "@/features/estates/actions";
 
 import Input from "@/components/ui/Input";
 import Button from "@/components/ui/Button";
 import Select, { type SelectOption } from "@/components/ui/Select";
+import { Form, FormActions, FormField } from "@/components/ui/Form";
 
 import type { City } from "@/server/db/schema";
+import { getFieldError, type ActionState } from "@/lib/action-state";
 
 type Props = {
   action: (payload: FormData) => void;
-  values: City;
-  setValues: (values: City) => void;
+  state: ActionState | null;
+  initialValues?: City;
   pending?: boolean;
-  editing?: boolean;
-  resetForm?: VoidFunction
-}
+  onCancel?: VoidFunction;
+};
 
-export default function CitiesForm({ action, values, setValues, editing = false, resetForm, pending = false }: Props) {
-  const { data: estates, error: estatesError, isError: isEstatesError, isPending: isEstatesPending } = useQuery({
-    queryFn: findAllEstates,
-    queryKey: ["estates"]
-  })
+export default function CitiesForm({
+  action,
+  state,
+  initialValues,
+  onCancel,
+  pending = false,
+}: Props) {
+  const {
+    data: estates,
+    error: estatesError,
+    isError: isEstatesError,
+    isPending: isEstatesPending,
+  } = useQuery({
+    queryFn: async () => {
+      return await findAllEstates({ limit: 20 });
+    },
+    queryKey: ["estates"],
+  });
 
-  const estateOptions: SelectOption[] = (estates ?? []).map(estate => ({
+  const estateOptions: SelectOption[] = (estates?.data ?? []).map((estate) => ({
     value: estate.code,
     label: estate.name,
   }));
 
   return (
-    <form action={action} className={styles.form}>
-      <div className={styles.formField}>
+    <Form action={action}>
+      {initialValues?.id && (
+        <input type="hidden" name="id" defaultValue={initialValues.id} />
+      )}
+
+      <FormField label="Nome" htmlFor="name" error={getFieldError(state, "name")}>
         <Input
           type="text"
           placeholder="Nome"
-          value={values.name}
-          onChange={(e) => setValues({ ...values, name: e.target.value })}
+          defaultValue={initialValues?.name ?? ""}
           minLength={2}
           maxLength={256}
           name="name"
+          id="name"
           required
+          disabled={pending}
         />
-      </div>
-      <div className={styles.formField}>
+      </FormField>
+
+      <FormField label="Estado" htmlFor="estateSelect" error={getFieldError(state, "estate")}>
         {isEstatesPending ? (
           <Input type="text" placeholder="Carregando estados..." disabled />
         ) : isEstatesError ? (
@@ -51,28 +70,25 @@ export default function CitiesForm({ action, values, setValues, editing = false,
           <Select
             name="estate"
             options={estateOptions}
-            value={values.estateCode}
-            onChange={(e) => setValues({ ...values, estateCode: e.target.value })}
+            // Use defaultValue for uncontrolled inputs
+            defaultValue={initialValues?.estateCode ?? ""}
             placeholder="Selecione o Estado"
             required
-            sizing="sm"
+            sizing="md"
             disabled={pending}
+            id="estateSelect"
           />
         )}
-      </div>
+      </FormField>
 
-      <input type="number" name="cityId" defaultValue={values.id} hidden disabled />
-
-      <div>
+      <FormActions>
         <Button type="submit" size="lg" disabled={pending}>
-          {editing ? "Salvar edição" : "Criar"}
+          {initialValues ? "Salvar edição" : "Criar"}
         </Button>
-      </div>
-      {editing && (
-        <Button type="button" onClick={resetForm} variant="outline">
+        <Button type="button" onClick={onCancel} variant="outline" disabled={pending}>
           Cancelar
         </Button>
-      )}
-    </form>
-  )
+      </FormActions>
+    </Form>
+  );
 }

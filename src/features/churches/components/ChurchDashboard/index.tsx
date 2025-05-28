@@ -17,14 +17,19 @@ import CreateChurchDialog from "../CreateChurchDialog"
 import UpdateChurchDialog from "../UpdateChurchDialog"
 import { useState } from "react"
 import { getQueryClient } from "@/lib/get-query-client"
+
 import Dialog from "@/components/ui/Dialog"
 import { FormActions } from "@/components/ui/Form"
 
-export default function ChurchDashboard() {
+import Pagination from "@/components/Pagination"
+import type { PaginatedAction } from "@/types/paginated-action"
+
+export default function ChurchDashboard({ limit, q, page }: PaginatedAction) {
   const queryClient = getQueryClient()
+
   const { data: churches, error: churchesError, isError: isChurchError, isPending: isChurchPending } = useQuery({
-    queryKey: ["churches"],
-    queryFn: findAllChurches
+    queryKey: ["churches", { limit, q, page }],
+    queryFn: async () => await findAllChurches({ limit, q, page })
   })
 
   const { onOpen: onOpenCreateChurchDialog } = useOpenCreateChurchDialog()
@@ -56,12 +61,13 @@ export default function ChurchDashboard() {
               Adicionar
             </Button>
           </nav>
-          <ChurchTable churches={churches} handleEdit={(c) => {
+          <ChurchTable churches={churches.data} handleEdit={(c) => {
             onOpenUpdateChurchDialog(c)
           }} handleDelete={(c) => {
             setDeletingId(c.id)
             setOpenDeletingDialog(true)
           }} />
+          <Pagination totalPages={churches.pagination.pageCount} />
         </>
       )}
       <CreateChurchDialog />

@@ -1,11 +1,25 @@
 import { db } from "../db"
-import { eq } from "drizzle-orm"
+import { asc, eq, or, ilike, type SQLWrapper } from "drizzle-orm"
 
 import { type EstateInsert, estatesTable } from "../db/schema"
+import { paginateQuery, type PaginatedProps } from "../utils/drizzle-pagination"
 
 export const ESTATES_REPOSITORY = {
-  async findAll() {
-    return db.query.estatesTable.findMany()
+  async findAll({ limit = 10, page = 1, q }: PaginatedProps) {
+    const query = db.select().from(estatesTable).orderBy(asc(estatesTable.code))
+
+    const search: SQLWrapper[] = []
+
+    if (q) {
+      search.push(ilike(estatesTable.name, q))
+      search.push(ilike(estatesTable.code, q))
+    }
+
+    query.where(or(...search))
+
+    const paginated = await paginateQuery(query.$dynamic(), { limit, page })
+    return paginated
+
   },
   async findByCode(code: string) {
     const result = await db.select().from(estatesTable).where(eq(estatesTable.code, code))
