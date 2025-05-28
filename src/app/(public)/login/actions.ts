@@ -1,9 +1,10 @@
 "use server"
-import type { ActionState } from "@/lib/action-state"
+
 import { login } from "@/lib/auth"
-import { ERROR_MESSAGES_PT_BR, PublicError } from "@/lib/errors"
 import { tryCatch } from "@/lib/try_catch"
 import { z } from "zod"
+
+import type { ActionState } from "@/lib/action-state"
 
 const loginSchema = z.object({
   email: z.string().email(),
