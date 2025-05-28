@@ -4,7 +4,6 @@ import {
   type ReactNode,
 } from "react";
 import style from "./dialog.module.css";
-import Button from "../Button";
 
 type Props = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> & {
   isOpen: boolean;
