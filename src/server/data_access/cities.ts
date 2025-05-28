@@ -4,7 +4,7 @@ import { type CityInsert, cityTable } from "../db/schema"
 import { type PaginatedProps, paginateQuery } from "../utils/drizzle-pagination"
 
 export const CITIES_REPOSITORY = {
-  async findAll({ page = 0, limit = 10, q }: PaginatedProps) {
+  async findAll({ page = 1, limit = 10, q }: PaginatedProps) {
     const query = db.select().from(cityTable)
 
     if (q) {
@@ -12,7 +12,6 @@ export const CITIES_REPOSITORY = {
     }
 
     const paginated = await paginateQuery(query.$dynamic(), { page, limit })
-    console.log(paginated)
     return paginated
   },
   async create(city: CityInsert) {
