@@ -111,7 +111,7 @@ export default function ChurchForm({ action, state, initialValues, pending, onCa
 
       <FormActions>
         <Button type="submit" disabled={pending}>
-          Salvar Edição
+          Salvar
         </Button>
 
         <Button type="button" onClick={onCancel} variant="outline" disabled={pending}>

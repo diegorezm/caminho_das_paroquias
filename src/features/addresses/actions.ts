@@ -111,7 +111,6 @@ export async function updateAddress(_prevState: unknown, formData: FormData): Pr
 
   const idRaw = formData.get("id")
   if (!idRaw || typeof idRaw !== "string") {
-    console.log(idRaw)
     return {
       status: "error",
       errors: {

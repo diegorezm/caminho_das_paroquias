@@ -70,6 +70,7 @@ export default function ChurchDashboard({ limit, q, page }: PaginatedAction) {
           <Pagination totalPages={churches.pagination.pageCount} />
         </>
       )}
+
       <CreateChurchDialog />
       <UpdateChurchDialog />
 
