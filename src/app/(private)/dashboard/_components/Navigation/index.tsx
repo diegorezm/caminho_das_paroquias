@@ -5,6 +5,7 @@ import { Building2, Church, MapPinHouse, Map, Users } from "lucide-react";
 import styles from "./navigation.module.css"
 import { usePathname } from "next/navigation";
 import Link from "next/link";
+import type { UserSafe } from "@/server/db/schema";
 
 type Route = {
   label: string;
@@ -44,13 +45,13 @@ const ADMIN_ROUTES: Route[] = [
 ]
 
 
-export default function Navigation() {
+export default function Navigation({ user }: { user?: UserSafe }) {
   const pathname = usePathname();
-
+  const routes = user?.role === "ADMIN" ? [...ROUTES, ...ADMIN_ROUTES] : ROUTES
   return (
     <nav>
       <ul className={styles.list}>
-        {ROUTES.map((route) => {
+        {routes.map((route) => {
           const isActive = pathname.startsWith(route.href);
 
           return (

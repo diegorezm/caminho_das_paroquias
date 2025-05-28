@@ -7,20 +7,21 @@ import { useState } from "react"
 
 import type { City } from "@/server/db/schema"
 
-import { deleteCity, findAllCities, updateCity } from "../../actions"
+import { deleteCity, findAllCities } from "../../actions"
 
 import { getQueryClient } from "@/lib/get-query-client"
+
+import { useOpenUpdateCityDialog } from "../../hooks/use-open-update-city-dialog"
+import { useOpenCreateCityDialog } from "../../hooks/use-open-create-city-dialog"
 
 import Dialog from "@/components/ui/Dialog"
 import Button from "@/components/ui/Button"
 import Loader from "@/components/Loader"
-import CitiesTable from "../CitiesTable"
 import Pagination from "@/components/Pagination"
-import { useOpenUpdateCityDialog } from "../../hooks/use-open-update-city-dialog"
-import { useOpenCreateCityDialog } from "../../hooks/use-open-create-city-dialog"
+
+import CitiesTable from "../CitiesTable"
 import CreateCityDialog from "../CreateCityDialog"
 import UpdateCityDialog from "../UpdateCityDialog"
-import { Plus } from "lucide-react"
 
 export default function CitiesDashboard() {
   const queryClient = getQueryClient()

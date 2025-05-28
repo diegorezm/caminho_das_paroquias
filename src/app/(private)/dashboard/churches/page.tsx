@@ -5,7 +5,6 @@ import type { PaginatedAction } from "@/types/paginated-action";
 
 export default async function ChurchPage({ searchParams }: { searchParams: Promise<PaginatedAction> }) {
   const { limit, page, q } = await searchParams;
-  console.log({ limit, page, q })
   const queryClient = getQueryClient()
 
   await queryClient.prefetchQuery({
