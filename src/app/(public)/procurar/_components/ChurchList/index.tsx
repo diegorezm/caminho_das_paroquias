@@ -44,6 +44,7 @@ export default function ChurchList({ limit, q, page, estate }: FindAllFilters) {
           <li key={item.churches.id} className={styles.resultItem}>
             <div className={styles.churchInfo}>
               <h3>{item.churches.name}</h3>
+              <p>{item.churches.phoneNumber}</p>
             </div>
 
             {item.addresses && (
