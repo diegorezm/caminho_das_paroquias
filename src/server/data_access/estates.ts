@@ -15,7 +15,10 @@ export const ESTATES_REPOSITORY = {
       search.push(ilike(estatesTable.code, q))
     }
 
-    query.where(or(...search))
+    if (search.length > 0) {
+      query.where(or(...search))
+    }
+
 
     const paginated = await paginateQuery(query.$dynamic(), { limit, page })
     return paginated

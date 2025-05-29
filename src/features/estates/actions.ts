@@ -13,16 +13,17 @@ import type { EstateInsert } from "@/server/db/schema"
 import type { PaginatedAction } from "@/types/paginated-action"
 
 export async function findAllEstates({ limit = 10, page = 1, q }: PaginatedAction) {
-  if (await getSession() !== undefined) {
-    const { data, error } = await tryCatch(ESTATES_REPOSITORY.findAll({ limit, page, q }))
+  // if (await getSession() === undefined) {
+  //   throw new PublicError(ERROR_MESSAGES_PT_BR.unauthorized)
+  // }
 
-    if (error) {
-      throw error
-    }
+  const { data, error } = await tryCatch(ESTATES_REPOSITORY.findAll({ limit, page, q }))
 
-    return data
+  if (error) {
+    throw error
   }
-  throw new PublicError(ERROR_MESSAGES_PT_BR.unauthorized)
+
+  return data
 }
 
 const createEstateSchema = z.object({

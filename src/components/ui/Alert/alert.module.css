@@ -15,11 +15,11 @@
 }
 
 .alert-info {
-  color: var(--surface);
+  color: var(--on-surface);
+  background-color: var(--surface);
 }
 
-.x_icon {
-}
+.x_icon {}
 
 .x_icon:hover {
   cursor: pointer;

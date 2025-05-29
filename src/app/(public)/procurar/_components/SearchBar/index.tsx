@@ -1,22 +1,39 @@
 "use client";
-import Input from "@/components/ui/Input";
+
 import styles from "./searchbar.module.css";
+import Input from "@/components/ui/Input";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useQuery } from "@tanstack/react-query";
+import { findAllEstates } from "@/features/estates/actions";
+import Select, { type SelectOption } from "@/components/ui/Select";
+import { useCallback, useEffect, useState } from "react";
 
-type Props = {
-  filter: {
-    estates: string[];
-  };
-};
-
-export default function SearchBar({ filter }: Props) {
-  const { estates } = filter;
-
+export default function SearchBar() {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  function handleSearchParams(k: string, v: string) {
+  const [searchTerm, setSearchTerm] = useState(searchParams.get("q")?.toString() ?? "");
+  const [selectedEstate, setSelectedEstate] = useState(searchParams.get("estate")?.toString() ?? "SP");
+
+  const {
+    data: estates,
+    error: estatesError,
+    isError: isEstatesError,
+    isPending: isEstatesPending,
+  } = useQuery({
+    queryFn: async () => {
+      return await findAllEstates({ limit: 20 });
+    },
+    queryKey: ["estates"],
+  });
+
+  const estateOptions: SelectOption[] = (estates?.data ?? []).map((estate) => ({
+    value: estate.code,
+    label: estate.name,
+  }));
+
+  const handleSearchParams = useCallback((k: string, v: string) => {
     const params = new URLSearchParams(searchParams);
     if (v) {
       params.set(k, v);
@@ -24,33 +41,47 @@ export default function SearchBar({ filter }: Props) {
       params.delete(k);
     }
     router.replace(`${pathname}?${params.toString()}`);
-  }
+  }, [pathname, router, searchParams])
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      handleSearchParams("q", searchTerm);
+    }, 500);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [searchTerm, handleSearchParams])
 
   return (
     <div className={styles.container}>
       <div className={styles["input-container"]}>
         <Input
           placeholder="Procurar por cidade, nome..."
-          defaultValue={searchParams.get("search")?.toString() ?? ""}
-          onChange={(e) => {
-            handleSearchParams("search", e.target.value);
-          }}
+          value={searchTerm}
+          onChange={e => setSearchTerm(e.target.value)}
         />
-        <select
-          name="filter-state-select"
-          id="filter-state-select"
-          className={styles["state-select"]}
-          defaultValue={searchParams.get("estate")?.toString() ?? "SP"}
-          onChange={(e) => {
-            handleSearchParams("estate", e.target.value);
-          }}
-        >
-          {estates.map((e, i) => (
-            <option value={e} key={i + 1} className={styles["state-option"]}>
-              {e}
-            </option>
-          ))}
-        </select>
+
+        <div>
+          {isEstatesPending ? (
+            <Input type="text" placeholder="Carregando estados..." disabled />
+          ) : isEstatesError ? (
+            <Input type="text" placeholder={`Erro ao carregar estados: ${estatesError?.message}`} disabled />
+          ) : (
+            <Select
+              name="estate"
+              options={estateOptions}
+              placeholder="Selecione o Estado"
+              sizing="md"
+              id="estateSelect"
+              onChange={(e) => {
+                setSelectedEstate(e.target.value)
+                handleSearchParams("estate", e.target.value)
+              }}
+              value={selectedEstate}
+            />
+          )}
+        </div>
       </div>
     </div>
   );

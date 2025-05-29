@@ -21,6 +21,7 @@ import { FormActions } from "@/components/ui/Form";
 import UsersTable from "../UsersTable";
 import CreateUserDialog from "../CreateUserDialog";
 import UpdateUserDialog from "../UpdateUserDialog";
+import Pagination from "@/components/Pagination";
 
 export default function UsersDashboard({ limit, q, page }: PaginatedAction) {
   const queryClient = getQueryClient()
@@ -65,6 +66,7 @@ export default function UsersDashboard({ limit, q, page }: PaginatedAction) {
             setDeletingId(u.id)
             setOpenDeletingDialog(true)
           }} handleEdit={(u) => onOpenUpdateUserDialog(u)} />
+          <Pagination totalPages={users.pagination.pageCount} />
         </>
       )}
 

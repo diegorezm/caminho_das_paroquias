@@ -1,0 +1,80 @@
+.resultsContainer {
+  padding: var(--padding-lg);
+  max-width: 900px;
+  /* Limit width for better readability */
+  margin: 0 auto;
+  /* Center the container */
+}
+
+.resultsHeader {
+  font-size: var(--fs-xl);
+  color: var(--text-primary);
+  margin-bottom: var(--margin-lg);
+  border-bottom: 1px solid var(--border);
+  padding-bottom: var(--padding-md);
+}
+
+.noResults {
+  text-align: center;
+  color: var(--secondary);
+  padding: var(--padding-xl);
+}
+
+.resultsList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: var(--margin-lg);
+  /* Space between grid items */
+}
+
+.resultItem {
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: var(--padding-lg);
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+}
+
+.resultItem:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+}
+
+.churchInfo h3 {
+  font-size: var(--fs-lg);
+  color: var(--primary);
+  margin-top: 0;
+  margin-bottom: var(--margin-md);
+}
+
+.churchInfo p,
+.addressInfo p,
+.cityInfo p {
+  font-size: var(--fs-md);
+  color: var(--text-secondary);
+  margin-bottom: var(--margin-xs);
+  line-height: 1.5;
+}
+
+.addressInfo,
+.cityInfo {
+  margin-top: var(--margin-md);
+  padding-top: var(--padding-md);
+  border-top: 1px dashed var(--border);
+}
+
+.addressInfo h4,
+.cityInfo h4 {
+  font-size: var(--fs-md);
+  color: var(--text-primary);
+  margin-bottom: var(--margin-xs);
+}
+
+.paginationControls {
+  margin-top: var(--margin-xl);
+  display: flex;
+  justify-content: center;
+}

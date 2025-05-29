@@ -16,11 +16,9 @@ export default function UsersTable({ users, handleDelete, handleEdit }: Props) {
     <Table headers={["Nome", "Email", "Role", "Ações"]} emptyMessage="Sem usuários.">
       {users.map((user) => (
         <tr key={user.id} className={tableStyles.tableRow}>
-
           <td style={{ textAlign: "center" }}>{user.name}</td>
           <td style={{ textAlign: "center" }}>{user.email}</td>
           <td style={{ textAlign: "center" }}>{user.role}</td>
-
           <td className={tableStyles.tableActions}>
             <button onClick={() => handleEdit(user)} className={tableStyles.iconBtn}>
               <Pencil size={16} />
