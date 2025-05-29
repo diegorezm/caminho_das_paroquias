@@ -20,11 +20,13 @@ import CreateAddressDialog from "../CreateAddressDialog"
 import UpdateAddressDialog from "../UpdateAddressDialog"
 import Pagination from "@/components/Pagination"
 
-export default function AddressesDashboard() {
+import type { PaginatedAction } from "@/types/paginated-action"
+
+export default function AddressesDashboard({ q, limit, page }: PaginatedAction) {
   const queryClient = getQueryClient()
   const { data: addresses, error: addressesError, isError: isAddressesError, isPending: isAddressesPending } = useQuery({
-    queryFn: async () => findAllAddresses({}),
-    queryKey: ["addresses"]
+    queryFn: async () => findAllAddresses({ q, limit, page }),
+    queryKey: ["addresses", { q, limit, page }]
   })
 
   const { onOpen: onOpenCreateDialog } = useOpenCreateAddressDialog()

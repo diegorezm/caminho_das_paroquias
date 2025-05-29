@@ -17,5 +17,5 @@ export default async function CitiesPage({ searchParams }: { searchParams: Promi
     }
   })
 
-  return <CitiesDashboard />
+  return <CitiesDashboard limit={limit} page={page} q={q} />
 }

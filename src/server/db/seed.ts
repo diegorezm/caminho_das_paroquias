@@ -3,8 +3,39 @@ import { config } from "dotenv";
 import { usersTable } from "./schema";
 import { exit } from "node:process";
 import { hash } from "@/lib/hasher.js";
+import { createReadStream } from "node:fs";
+import csv from "csv-parser"
 
 config()
+
+
+// NOME_IGREJA,CEP,ESTADO,CIDADE,RUA,BAIRRO,NUMERO,ATENDENTE,EMAIL,NUMERO_RESPONSAVEL,,,,,,,,,,,
+type CSVFile = {
+  NOME_IGREJA: string;
+  CEP: string;
+  CIDADE: string;
+  RUA: string;
+  BAIRRO: string;
+  NUMERO: string;
+  ATENDENTE: string;
+  EMAIL: string;
+  NUMERO_RESPONSAVEL: string
+  [key: string]: unknown;
+}
+
+
+function parseCSV(filePath: string): Promise<CSVFile[]> {
+  const results: CSVFile[] = []
+  return new Promise((resolve, reject) => {
+    createReadStream(filePath).pipe(csv()).on('data', (data: CSVFile) => {
+      results.push(data);
+    }).on("end", () => {
+      resolve(results)
+    }).on("error", (error: Error) => {
+      reject(error)
+    })
+  })
+}
 
 async function createAdminUser() {
   const email = process.env.ADMIN_USER_EMAIL
@@ -34,6 +65,14 @@ function main(args: string[]) {
     }).finally(() => {
       exit()
     })
+  }
+
+  if (args.includes("--csv")) {
+    const filePath = args[args.indexOf("--csv") + 1]
+    if (!filePath) throw new Error("You should provide a file.")
+    parseCSV(filePath).then((e) => {
+      console.log(e)
+    }).catch(e => console.error(e))
   }
 }
 

@@ -15,5 +15,5 @@ export default async function AddressPage({ searchParams }: { searchParams: Prom
       return await findAllAddresses({ limit, page, q })
     }
   })
-  return <AddressesDashboard />
+  return <AddressesDashboard limit={limit} page={page} q={q} />
 }

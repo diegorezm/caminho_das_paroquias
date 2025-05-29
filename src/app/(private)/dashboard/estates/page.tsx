@@ -13,5 +13,5 @@ export default async function EstatesDashboardPage({ searchParams }: { searchPar
     queryFn: async () => await findAllEstates({ limit, page, q })
   })
 
-  return <EstatesDashboard />
+  return <EstatesDashboard limit={limit} q={q} page={page} />
 }

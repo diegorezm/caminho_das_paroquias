@@ -19,9 +19,11 @@ import { useOpenCreateEstateDialog } from "../../hooks/use-open-create-estate-di
 import CreateEstateDialog from "../CreateEstateDialog";
 import UpdateEstateDialog from "../UpdateEstateDialog";
 
-export default function EstatesDashboard() {
+import type { PaginatedAction } from "@/types/paginated-action"
+
+export default function EstatesDashboard({ q, limit, page }: PaginatedAction) {
   const queryClient = getQueryClient()
-  const { data: estates, error: estatesError, isError: isEstatesError, isPending: isEstatesPending } = useQuery({ queryKey: ["estates"], queryFn: async () => await findAllEstates({}) })
+  const { data: estates, error: estatesError, isError: isEstatesError, isPending: isEstatesPending } = useQuery({ queryKey: ["estates", { q, limit, page }], queryFn: async () => await findAllEstates({ q, limit, page }) })
 
   const [isDeleteDialog, setIsDeleteDialog] = useState(false);
   const [estateToDelete, setEstateToDelete] = useState<Estate | null>(null)

@@ -22,14 +22,15 @@ import Pagination from "@/components/Pagination"
 import CitiesTable from "../CitiesTable"
 import CreateCityDialog from "../CreateCityDialog"
 import UpdateCityDialog from "../UpdateCityDialog"
+import type { PaginatedAction } from "@/types/paginated-action"
 
-export default function CitiesDashboard() {
+export default function CitiesDashboard({ q, limit, page }: PaginatedAction) {
   const queryClient = getQueryClient()
   const { data: cities, error: citiesError, isError: isCitiesError, isPending: isCitiesPending } = useQuery({
     queryFn: async () => {
-      return await findAllCities({})
+      return await findAllCities({ q, limit, page })
     },
-    queryKey: ["cities"]
+    queryKey: ["cities", { q, limit, page }]
   })
 
   const { onOpen: onOpenUpdateCityDialog } = useOpenUpdateCityDialog()
