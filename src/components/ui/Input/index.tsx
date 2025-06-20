@@ -13,7 +13,7 @@ export default function Input({
   variant = "default",
   inputSize = "md",
   ...props
-}: Props) {
+}: InputProps) {
   const inputClass = `${style.input} ${style[`input-${inputSize}`]} ${style[`input-${variant}`]}`;
   return <input className={inputClass} {...props} />;
 }
