@@ -13,10 +13,12 @@ export const SEARCH_REPOSITORY = {
       .leftJoin(addressTable, eq(churchTable.addressId, addressTable.id))
       .leftJoin(cityTable, eq(cityTable.id, addressTable.cityId))
       .leftJoin(estatesTable, eq(estatesTable.code, cityTable.estateCode))
-      .where(estate ? eq(estatesTable.code, estate) : undefined)
-      .orderBy(churchTable.id)
 
     const search: SQLWrapper[] = []
+
+    if (estate) {
+      search.push(eq(estatesTable.code, estate))
+    }
 
     if (q) {
       search.push(ilike(churchTable.name, q))
