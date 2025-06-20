@@ -46,7 +46,7 @@ export default function SearchBar() {
   useEffect(() => {
     const handler = setTimeout(() => {
       handleSearchParams("q", searchTerm);
-    }, 500);
+    }, 250);
 
     return () => {
       clearTimeout(handler);
