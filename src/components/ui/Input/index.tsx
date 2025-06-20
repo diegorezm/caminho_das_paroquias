@@ -1,7 +1,7 @@
 import type { InputHTMLAttributes, DetailedHTMLProps } from "react";
 import style from "./input.module.css";
 
-type Props = DetailedHTMLProps<
+export type InputProps = DetailedHTMLProps<
   InputHTMLAttributes<HTMLInputElement>,
   HTMLInputElement
 > & {
