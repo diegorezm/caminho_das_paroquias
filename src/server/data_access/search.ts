@@ -21,12 +21,12 @@ export const SEARCH_REPOSITORY = {
     }
 
     if (q) {
-      search.push(ilike(churchTable.name, q))
-      search.push(ilike(churchTable.email, q))
-      search.push(ilike(cityTable.name, q))
-      search.push(ilike(addressTable.neighborhood, q))
-      search.push(ilike(addressTable.zipCode, q))
-      search.push(ilike(addressTable.street, q))
+      search.push(ilike(churchTable.name, toPercentage(q)))
+      search.push(ilike(churchTable.email, toPercentage(q)))
+      search.push(ilike(cityTable.name, toPercentage(q)))
+      search.push(ilike(addressTable.neighborhood, toPercentage(q)))
+      search.push(ilike(addressTable.zipCode, toPercentage(q)))
+      search.push(ilike(addressTable.street, toPercentage(q)))
     }
 
     if (search.length > 0) {
@@ -36,4 +36,9 @@ export const SEARCH_REPOSITORY = {
     const paginated = await paginateQuery(query.$dynamic(), { limit, page })
     return paginated
   }
+}
+
+// stupid name
+function toPercentage(q: string) {
+  return `%${q}%`
 }
