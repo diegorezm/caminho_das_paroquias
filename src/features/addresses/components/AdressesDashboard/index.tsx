@@ -8,7 +8,7 @@ import styles from "./addresses.dashboard.module.css"
 import Loader from "@/components/Loader"
 import AddressTable from "../AddressesTable"
 
-import { useState } from "react"
+import { Suspense, useState } from "react"
 
 import type { Address } from "@/server/db/schema"
 import { getQueryClient } from "@/lib/get-query-client"
@@ -21,6 +21,7 @@ import UpdateAddressDialog from "../UpdateAddressDialog"
 import Pagination from "@/components/Pagination"
 
 import type { PaginatedAction } from "@/types/paginated-action"
+import SearchParamsInput from "@/components/SearchQueryInput"
 
 export default function AddressesDashboard({ q, limit, page }: PaginatedAction) {
   const queryClient = getQueryClient()
@@ -54,25 +55,28 @@ export default function AddressesDashboard({ q, limit, page }: PaginatedAction) 
   return (
     <div className={styles.container}>
       <h1>Endereços</h1>
+
+      <div className={styles.navigation}>
+        <SearchParamsInput />
+        <Button onClick={onOpenCreateDialog}>
+          Adicionar
+        </Button>
+      </div>
       {isAddressesPending && <Loader />}
 
       {isAddressesError && <p>Error: {addressesError?.message}</p>}
 
+
       {!isAddressesError && !isAddressesPending && (
         <>
-          <div className={styles.navigation}>
-            <Button onClick={onOpenCreateDialog}>
-              Adicionar
-            </Button>
-          </div>
           <AddressTable addresses={addresses.data} handleEdit={handleEdit} handleDelete={(address) => {
             setAddressToDelete(address.id)
             setIsDeleteDialog(true)
           }} />
-
           <Pagination totalPages={addresses.pagination.pageCount} />
         </>
-      )}
+      )
+      }
 
       <Dialog title={`Tem certeza que deseja remover este endereço?`} isOpen={isDeleteDialog} onClose={() => setIsDeleteDialog(false)}>
         <div className={styles.deleteDialogAction}>
@@ -87,6 +91,6 @@ export default function AddressesDashboard({ q, limit, page }: PaginatedAction) 
 
       <CreateAddressDialog />
       <UpdateAddressDialog />
-    </div>
+    </div >
   )
 }

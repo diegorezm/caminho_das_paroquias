@@ -9,7 +9,9 @@ export const ADDRESS_REPOSITORY = {
     const search: SQLWrapper[] = []
 
     if (q) {
-      search.push(ilike(addressTable.neighborhood, q))
+      search.push(ilike(addressTable.neighborhood, `%${q}%`))
+      search.push(ilike(addressTable.street, `%${q}%`))
+      search.push(ilike(addressTable.zipCode, `%${q}%`))
     }
 
     query.where(or(...search))

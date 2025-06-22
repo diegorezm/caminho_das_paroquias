@@ -9,8 +9,9 @@ export const CHURCH_REPOSITORY = {
     const search: SQLWrapper[] = []
 
     if (q) {
-      search.push(ilike(churchTable.name, q))
-      search.push(ilike(churchTable.contactPerson, q))
+      search.push(ilike(churchTable.name, `%${q}%`))
+      search.push(ilike(churchTable.contactPerson, `%${q}%`))
+      search.push(ilike(churchTable.email, `%${q}%`))
     }
 
     query.where(or(...search))

@@ -1,4 +1,6 @@
 .container {
+  display: flex;
+  flex-direction: column;
   padding: var(--padding-lg);
   color: var(--on-surface);
 }
@@ -6,6 +8,7 @@
 .navigation {
   display: flex;
   justify-content: flex-end;
+  gap: 12px;
   width: 100%;
   margin-bottom: 12px;
 }

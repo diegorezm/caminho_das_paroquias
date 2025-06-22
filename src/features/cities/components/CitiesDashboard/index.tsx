@@ -23,6 +23,7 @@ import CitiesTable from "../CitiesTable"
 import CreateCityDialog from "../CreateCityDialog"
 import UpdateCityDialog from "../UpdateCityDialog"
 import type { PaginatedAction } from "@/types/paginated-action"
+import SearchParamsInput from "@/components/SearchQueryInput"
 
 export default function CitiesDashboard({ q, limit, page }: PaginatedAction) {
   const queryClient = getQueryClient()
@@ -55,17 +56,18 @@ export default function CitiesDashboard({ q, limit, page }: PaginatedAction) {
   return (
     <div className={styles.container}>
       <h1>Cidades</h1>
+      <nav className={styles.navigation}>
+        <SearchParamsInput />
+        <Button onClick={onOpenCreateCityDialog} size="lg">
+          Adicionar
+        </Button>
+      </nav>
       {isCitiesPending && <Loader />}
 
       {isCitiesError && <p>Error: {citiesError?.message}</p>}
 
       {!isCitiesError && !isCitiesPending && (
         <>
-          <nav className={styles.navigation}>
-            <Button onClick={onOpenCreateCityDialog} size="lg">
-              Adicionar
-            </Button>
-          </nav>
           <CitiesTable cities={cities.data} handleEdit={(city) => {
             onOpenUpdateCityDialog(city)
           }} handleDelete={(city) => {

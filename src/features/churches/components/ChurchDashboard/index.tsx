@@ -23,6 +23,7 @@ import { FormActions } from "@/components/ui/Form"
 
 import Pagination from "@/components/Pagination"
 import type { PaginatedAction } from "@/types/paginated-action"
+import SearchParamsInput from "@/components/SearchQueryInput"
 
 export default function ChurchDashboard({ limit, q, page }: PaginatedAction) {
   const queryClient = getQueryClient()
@@ -51,16 +52,19 @@ export default function ChurchDashboard({ limit, q, page }: PaginatedAction) {
   return (
     <div className={styles.container}>
       <h1>Igrejas</h1>
+
+      <nav className={styles.navigation}>
+        <SearchParamsInput />
+        <Button onClick={onOpenCreateChurchDialog}>
+          Adicionar
+        </Button>
+      </nav>
+
       {isChurchPending && <Loader />}
 
       {isChurchError && <p>{churchesError.message}</p>}
       {!isChurchError && !isChurchPending && (
         <>
-          <nav className={styles.navigation}>
-            <Button onClick={onOpenCreateChurchDialog}>
-              Adicionar
-            </Button>
-          </nav>
           <ChurchTable churches={churches.data} handleEdit={(c) => {
             onOpenUpdateChurchDialog(c)
           }} handleDelete={(c) => {

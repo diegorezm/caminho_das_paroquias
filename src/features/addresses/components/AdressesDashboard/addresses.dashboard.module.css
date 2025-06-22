@@ -1,4 +1,6 @@
 .container {
+  display: flex;
+  flex-direction: column;
   padding: var(--padding-lg);
   color: var(--on-surface);
 }
@@ -8,6 +10,7 @@
   justify-content: flex-end;
   width: 100%;
   margin-bottom: 12px;
+  gap: 12px;
 }
 
 .error {
