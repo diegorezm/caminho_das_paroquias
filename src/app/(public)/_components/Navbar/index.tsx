@@ -1,11 +1,11 @@
-import styles from "./navbar.module.css";
-
-import Link from "next/link";
-import Button from "@/components/ui/Button";
 import Image from "next/image";
 
-import { type UserSafe } from "@/server/db/schema";
+import Link from "next/link";
 import UserMenu from "@/components/UserMenu";
+import Button from "@/components/ui/Button";
+
+import type { UserSafe } from "@/server/db/schema";
+import styles from "./navbar.module.css";
 
 type Props = {
 	user?: UserSafe;
@@ -17,7 +17,7 @@ export default function Navbar({ user, className }: Props) {
 		<div className={`${styles.navbar} ${className}`}>
 			<div>
 				<Link href="/">
-					<Image src="/logo.png" height={100} width={100} alt="App logo" />
+					<Image src="/logo.png" height={100} width={110} alt="App logo" />
 				</Link>
 			</div>
 
